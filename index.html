@@ -424,6 +424,7 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 1.5rem;
+            padding-top: 3.75rem;
             transition: all 0.2s;
             cursor: pointer;
             position: relative;
@@ -442,7 +443,6 @@
             color: var(--text-primary);
             margin-bottom: 0.75rem;
             padding-right: 2.5rem;
-            padding-left: ${currentUser ? '2.5rem' : '0'};
         }
 
         .project-description {
@@ -517,61 +517,46 @@
             color: var(--primary);
         }
 
-        .favorite-btn {
+        .card-actions {
             position: absolute;
             top: 1rem;
             right: 1rem;
-            color: var(--danger);
-            cursor: pointer;
-            font-size: 1.25rem;
-            z-index: 2;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-            background: var(--bg-secondary);
-            width: 32px;
-            height: 32px;
             display: flex;
+            gap: 0.5rem;
             align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px var(--shadow);
+            z-index: 3;
         }
 
-        .favorite-btn:hover {
+        .favorite-btn,
+        .delete-btn {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            transition: all 0.2s;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .favorite-btn:hover,
+        .delete-btn:hover {
             opacity: 1;
-            transform: scale(1.1);
+            transform: translateY(-1px);
         }
 
         .favorite-btn.active {
-            opacity: 1;
             color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.35);
         }
 
         .delete-btn {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
             color: var(--danger);
-            cursor: pointer;
-            font-size: 1rem;
-            z-index: 2;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-            background: var(--bg-secondary);
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-
-        .delete-btn:hover {
-            opacity: 1;
-            transform: scale(1.1);
-            background: var(--danger);
-            color: white;
         }
 
         /* Form Styles */
@@ -788,6 +773,16 @@
             gap: 1.5rem;
         }
 
+        .profile-section-note {
+            color: var(--text-tertiary);
+            margin: 0.75rem 0 1.5rem;
+            font-size: 0.9375rem;
+        }
+
+        .project-card.compact {
+            padding-top: 1.5rem;
+        }
+
         /* Modal */
         .modal {
             display: none;
@@ -806,6 +801,7 @@
             background: var(--bg-secondary);
             margin: 2rem auto;
             padding: 2rem;
+            padding-top: 4.25rem;
             width: 90%;
             max-width: 800px;
             border-radius: 24px;
@@ -1102,6 +1098,7 @@
         /* Auth Modal */
         .auth-modal {
             max-width: 400px;
+            padding-top: 4.75rem;
         }
 
         .auth-tabs {
@@ -1534,7 +1531,6 @@
         let currentProjectId = null;
         let selectedTags = new Set();
         let projectsUnsubscribe = null;
-        let userFavoritesCache = new Set();
 
         // ==================== AUTH FUNCTIONS ====================
         auth.onAuthStateChanged(user => {
@@ -1544,8 +1540,12 @@
                 projectsUnsubscribe();
             }
             loadProjects();
-            if (user) {
-                loadUserFavorites();
+            if (document.getElementById('profile').classList.contains('active')) {
+                if (currentUser) {
+                    loadProfile();
+                } else {
+                    document.getElementById('profileContent').innerHTML = '<div class="empty-state"><i class="fas fa-user-lock"></i><p>Please sign in to view your account.</p></div>';
+                }
             }
         });
 
@@ -1623,9 +1623,8 @@
         window.logout = async function() {
             try {
                 await auth.signOut();
-                userFavoritesCache.clear();
                 showNotification('Signed out', 'success');
-                document.querySelector('[data-tab="dashboard"]').click();
+                showTab('dashboard');
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -1654,22 +1653,13 @@
             
             navButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    navButtons.forEach(b => b.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-                    
-                    btn.classList.add('active');
                     const tabId = btn.dataset.tab;
-                    document.getElementById(tabId).classList.add('active');
-                    
-                    if (tabId === 'profile') {
-                        if (currentUser) {
-                            loadProfile();
-                        } else {
-                            showNotification('Please sign in to view your profile', 'warning');
-                            showAuthModal();
-                            document.querySelector('[data-tab="dashboard"]').click();
-                        }
+                    if (tabId === 'profile' && !currentUser) {
+                        showAuthModal();
+                        showTab('dashboard');
+                        return;
                     }
+                    showTab(tabId);
                 });
             });
         }
@@ -1724,6 +1714,19 @@
             document.getElementById('tagCount').textContent = `${selectedTags.size}/5 selected`;
         }
 
+        window.showTab = function(tabId) {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabId);
+            });
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.toggle('active', tab.id === tabId);
+            });
+
+            if (tabId === 'profile' && currentUser) {
+                loadProfile();
+            }
+        }
+
         function initializeProjectForm() {
             const form = document.getElementById('projectForm');
             
@@ -1762,29 +1765,11 @@
                     document.getElementById('tagCount').textContent = '0/5 selected';
                     document.getElementById('descCount').textContent = '0';
                     
-                    document.querySelector('[data-tab="dashboard"]').click();
+                    showTab('dashboard');
                 } catch (error) {
                     showNotification(error.message, 'error');
                 }
             });
-        }
-
-        // ==================== LOAD USER FAVORITES ====================
-        async function loadUserFavorites() {
-            if (!currentUser) return;
-            
-            try {
-                const favSnapshot = await db.collection('favorites')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                
-                userFavoritesCache.clear();
-                favSnapshot.forEach(doc => {
-                    userFavoritesCache.add(doc.data().projectId);
-                });
-            } catch (error) {
-                console.error('Error loading favorites:', error);
-            }
         }
 
         // ==================== PROJECTS FUNCTIONS ====================
@@ -1793,53 +1778,69 @@
             let query = db.collection('projects');
             
             const sortBy = document.getElementById('sortSelect')?.value || 'newest';
-            
-            switch(sortBy) {
-                case 'newest':
-                    query = query.orderBy('createdAt', 'desc');
-                    break;
-                case 'oldest':
-                    query = query.orderBy('createdAt', 'asc');
-                    break;
-                case 'mostUpvoted':
-                    query = query.orderBy('upvotes', 'desc');
-                    break;
-                case 'mostFavorited':
-                    query = query.orderBy('favorites', 'desc');
-                    break;
-                default:
-                    query = query.orderBy('createdAt', 'desc');
+
+            if (sortBy === 'mostUpvoted') {
+                query = query.orderBy('upvotes', 'desc');
+            } else if (sortBy === 'mostFavorited') {
+                query = query.orderBy('favorites', 'desc');
+            } else {
+                query = query.orderBy('createdAt', 'desc');
             }
             
             if (projectsUnsubscribe) {
                 projectsUnsubscribe();
             }
             
+            projectsGrid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading projects...</div>';
+
             projectsUnsubscribe = query.onSnapshot(async (snapshot) => {
                 let projects = [];
                 snapshot.forEach(doc => {
                     projects.push({ id: doc.id, ...doc.data() });
                 });
+
+                if (sortBy === 'oldest') {
+                    projects.sort((a, b) => {
+                        const aTime = a.createdAt?.toMillis?.() || 0;
+                        const bTime = b.createdAt?.toMillis?.() || 0;
+                        return aTime - bTime;
+                    });
+                }
+                
+                let userFavorites = new Set();
+                if (currentUser) {
+                    const favSnapshot = await db.collection('favorites')
+                        .where('userId', '==', currentUser.uid)
+                        .get();
+                    favSnapshot.forEach(doc => {
+                        userFavorites.add(doc.data().projectId);
+                    });
+                }
                 
                 const categoryFilter = document.getElementById('categoryFilter')?.value;
                 if (categoryFilter && categoryFilter !== 'all') {
-                    projects = projects.filter(p => p.tags && p.tags.includes(categoryFilter));
+                    projects = projects.filter(p => Array.isArray(p.tags) && p.tags.includes(categoryFilter));
                 }
                 
-                const searchTerm = document.getElementById('searchInput')?.value?.toLowerCase();
+                const searchTerm = document.getElementById('searchInput')?.value?.trim().toLowerCase();
                 if (searchTerm) {
                     projects = projects.filter(p => 
                         p.name?.toLowerCase().includes(searchTerm) ||
                         p.description?.toLowerCase().includes(searchTerm) ||
-                        p.userName?.toLowerCase().includes(searchTerm)
+                        p.userName?.toLowerCase().includes(searchTerm) ||
+                        (Array.isArray(p.tags) && p.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
                     );
                 }
                 
-                displayProjects(projects);
+                displayProjects(projects, userFavorites);
+            }, (error) => {
+                console.error('Error loading projects:', error);
+                projectsGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Could not load projects.</p></div>';
+                showNotification(error.message || 'Could not load projects', 'error');
             });
         }
 
-        function displayProjects(projects) {
+        function displayProjects(projects, userFavorites = new Set()) {
             const projectsGrid = document.getElementById('projectsGrid');
             
             if (projects.length === 0) {
@@ -1847,37 +1848,40 @@
                     <div class="empty-state">
                         <i class="fas fa-folder-open"></i>
                         <p>No projects found</p>
-                        <button onclick="document.querySelector('[data-tab=\"create\"]').click()">Create your first project</button>
+                        <button onclick="showTab('create')">Create your first project</button>
                     </div>
                 `;
                 return;
             }
             
             projectsGrid.innerHTML = projects.map(project => {
-                const isFavorited = userFavoritesCache.has(project.id);
+                const isFavorited = userFavorites.has(project.id);
+                const canDelete = currentUser && project.userId === currentUser.uid;
                 
                 return `
-                <div class="project-card" onclick="openProjectModal('${project.id}')">
-                    ${currentUser ? `
-                        <div class="favorite-btn ${isFavorited ? 'active' : ''}" onclick="toggleFavorite('${project.id}', event)">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    ` : ''}
-                    ${currentUser && project.userId === currentUser.uid ? 
-                        `<div class="delete-btn" onclick="deleteProject('${project.id}', event)">
-                            <i class="fas fa-trash"></i>
-                        </div>` : 
-                        ''}
+                <div class="project-card" data-project-id="${project.id}" onclick="openProjectModal('${project.id}')">
+                    <div class="card-actions">
+                        ${currentUser ? `
+                            <button type="button" class="favorite-btn ${isFavorited ? 'active' : ''}" title="Favorite project" onclick="toggleFavorite('${project.id}', event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        ` : ''}
+                        ${canDelete ? `
+                            <button type="button" class="delete-btn" title="Delete project" onclick="deleteProject('${project.id}', event)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
                     <h3>${escapeHtml(project.name)}</h3>
                     <p class="project-description">${escapeHtml(project.description?.substring(0, 150))}${project.description?.length > 150 ? '...' : ''}</p>
                     <div class="project-meta">
                         <span class="project-author">
-                            <i class="fas fa-user"></i> ${escapeHtml(project.userName)}
+                            <i class="fas fa-user"></i> ${escapeHtml(project.userName || 'Unknown')}
                         </span>
                         <span>${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                     </div>
                     <div class="project-tags">
-                        ${project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                        ${project.tags ? project.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('') : ''}
                     </div>
                     <div class="project-stats">
                         <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
@@ -1908,7 +1912,6 @@
                     await projectRef.update({
                         favorites: firebase.firestore.FieldValue.increment(-1)
                     });
-                    userFavoritesCache.delete(projectId);
                 } else {
                     await favoriteRef.set({
                         userId: currentUser.uid,
@@ -1918,7 +1921,6 @@
                     await projectRef.update({
                         favorites: firebase.firestore.FieldValue.increment(1)
                     });
-                    userFavoritesCache.add(projectId);
                 }
             } catch (error) {
                 showNotification(error.message, 'error');
@@ -1930,113 +1932,128 @@
             if (!currentUser) return;
             
             const profileContent = document.getElementById('profileContent');
+            profileContent.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading account...</div>';
             
             try {
                 const projectsSnapshot = await db.collection('projects')
                     .where('userId', '==', currentUser.uid)
-                    .orderBy('createdAt', 'desc')
                     .get();
                 
                 const userProjects = [];
                 projectsSnapshot.forEach(doc => {
                     userProjects.push({ id: doc.id, ...doc.data() });
                 });
+                userProjects.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
                 
-                // Get favorite projects
-                const favoriteProjects = [];
-                for (const projectId of userFavoritesCache) {
-                    const projectDoc = await db.collection('projects').doc(projectId).get();
-                    if (projectDoc.exists) {
-                        favoriteProjects.push({ id: projectDoc.id, ...projectDoc.data() });
-                    }
-                }
+                const favoritesSnapshot = await db.collection('favorites')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                
+                const favoriteProjectIds = favoritesSnapshot.docs.map(doc => doc.data().projectId).filter(Boolean);
+                const favoriteProjects = (await Promise.all(
+                    favoriteProjectIds.map(async projectId => {
+                        const projectDoc = await db.collection('projects').doc(projectId).get();
+                        return projectDoc.exists ? { id: projectDoc.id, ...projectDoc.data() } : null;
+                    })
+                )).filter(Boolean);
+                favoriteProjects.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
                 
                 displayProfile(userProjects, favoriteProjects);
             } catch (error) {
+                console.error('Error loading profile:', error);
+                profileContent.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Could not load your account.</p></div>';
                 showNotification(error.message, 'error');
             }
+        }
+
+        function createProfileCard(project, { canDelete = false, canUnfavorite = false } = {}) {
+            return `
+                <div class="project-card compact" onclick="openProjectModal('${project.id}')">
+                    <div class="card-actions">
+                        ${canUnfavorite ? `
+                            <button type="button" class="favorite-btn active" title="Remove favorite" onclick="toggleFavorite('${project.id}', event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        ` : ''}
+                        ${canDelete ? `
+                            <button type="button" class="delete-btn" title="Delete project" onclick="deleteProject('${project.id}', event)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                    <h3>${escapeHtml(project.name)}</h3>
+                    <p class="project-description">${escapeHtml(project.description?.substring(0, 120))}${project.description?.length > 120 ? '...' : ''}</p>
+                    <div class="project-meta">
+                        <span class="project-author"><i class="fas fa-user"></i> ${escapeHtml(project.userName || 'Unknown')}</span>
+                        <span>${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
+                    </div>
+                    <div class="project-stats">
+                        <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
+                        <span><i class="fas fa-heart"></i> ${project.favorites || 0}</span>
+                        <span><i class="fas fa-comment"></i> ${project.comments || 0}</span>
+                    </div>
+                </div>
+            `;
         }
 
         function displayProfile(userProjects, favoriteProjects) {
             const profileContent = document.getElementById('profileContent');
             const displayName = currentUser.displayName || currentUser.email.split('@')[0];
             const initial = displayName.charAt(0).toUpperCase();
+            const totalProjectLikes = userProjects.reduce((sum, project) => sum + (project.favorites || 0), 0);
             
             profileContent.innerHTML = `
                 <div class="profile-header">
                     <div class="profile-avatar-large">${initial}</div>
                     <div class="profile-info">
                         <h2>${escapeHtml(displayName)}</h2>
-                        <p>${escapeHtml(currentUser.email)}</p>
+                        <p>${escapeHtml(currentUser.email || '')}</p>
                         <div class="profile-stats">
                             <div class="profile-stat">
                                 <div class="number">${userProjects.length}</div>
-                                <div class="label">Projects</div>
+                                <div class="label">Uploads</div>
                             </div>
                             <div class="profile-stat">
                                 <div class="number">${favoriteProjects.length}</div>
                                 <div class="label">Favorites</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="number">${totalProjectLikes}</div>
+                                <div class="label">Likes Earned</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="profile-tabs">
-                    <button class="profile-tab active" onclick="showProfileTab('projects')">My Projects</button>
-                    <button class="profile-tab" onclick="showProfileTab('favorites')">Favorites</button>
+                    <button class="profile-tab active" onclick="showProfileTab('projects')">My Uploads</button>
+                    <button class="profile-tab" onclick="showProfileTab('favorites')">Favorited</button>
                 </div>
                 
+                <p class="profile-section-note">Click any project card to open it. Use the trash icon to delete your own uploads.</p>
+
                 <div id="profileProjects" class="profile-grid">
                     ${userProjects.length === 0 ? 
-                        '<div class="empty-state"><i class="fas fa-code"></i><p>No projects yet</p><button onclick="document.querySelector(\'[data-tab=\"create\"]\').click()">Create your first project</button></div>' : 
-                        userProjects.map(project => `
-                            <div class="project-card" onclick="openProjectModal('${project.id}')">
-                                <h3>${escapeHtml(project.name)}</h3>
-                                <p class="project-description">${escapeHtml(project.description?.substring(0, 100))}...</p>
-                                <div class="project-tags">
-                                    ${project.tags ? project.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
-                                </div>
-                                <div class="project-stats">
-                                    <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
-                                    <span><i class="fas fa-heart"></i> ${project.favorites || 0}</span>
-                                </div>
-                            </div>
-                        `).join('')
+                        '<div class="empty-state"><i class="fas fa-code"></i><p>No projects uploaded yet.</p><button onclick="showTab(&quot;create&quot;)">Upload your first project</button></div>' : 
+                        userProjects.map(project => createProfileCard(project, { canDelete: true })).join('')
                     }
                 </div>
                 
                 <div id="profileFavorites" class="profile-grid" style="display: none;">
                     ${favoriteProjects.length === 0 ? 
-                        '<div class="empty-state"><i class="fas fa-heart"></i><p>No favorites yet</p></div>' : 
-                        favoriteProjects.map(project => `
-                            <div class="project-card" onclick="openProjectModal('${project.id}')">
-                                <h3>${escapeHtml(project.name)}</h3>
-                                <p class="project-description">${escapeHtml(project.description?.substring(0, 100))}...</p>
-                                <div class="project-tags">
-                                    ${project.tags ? project.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
-                                </div>
-                                <div class="project-stats">
-                                    <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
-                                    <span><i class="fas fa-heart"></i> ${project.favorites || 0}</span>
-                                </div>
-                            </div>
-                        `).join('')
+                        '<div class="empty-state"><i class="fas fa-heart"></i><p>No favorites yet.</p></div>' : 
+                        favoriteProjects.map(project => createProfileCard(project, { canUnfavorite: true })).join('')
                     }
                 </div>
             `;
         }
 
         window.showProfileTab = function(tab) {
-            document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.profile-grid').forEach(g => g.style.display = 'none');
-            
-            if (tab === 'projects') {
-                document.querySelector('.profile-tab').classList.add('active');
-                document.getElementById('profileProjects').style.display = 'grid';
-            } else {
-                document.querySelectorAll('.profile-tab')[1].classList.add('active');
-                document.getElementById('profileFavorites').style.display = 'grid';
-            }
+            const tabs = document.querySelectorAll('.profile-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            document.getElementById('profileProjects').style.display = tab === 'projects' ? 'grid' : 'none';
+            document.getElementById('profileFavorites').style.display = tab === 'favorites' ? 'grid' : 'none';
+            tabs[tab === 'projects' ? 0 : 1]?.classList.add('active');
         };
 
         // ==================== MODAL FUNCTIONS ====================
@@ -2058,18 +2075,16 @@
                 
                 const project = { id: projectDoc.id, ...projectDoc.data() };
                 
-                // Get comments
                 const commentsSnapshot = await db.collection('comments')
                     .where('projectId', '==', projectId)
-                    .orderBy('createdAt', 'desc')
                     .get();
                 
                 const comments = [];
                 commentsSnapshot.forEach(doc => {
                     comments.push({ id: doc.id, ...doc.data() });
                 });
+                comments.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
                 
-                // Get user's vote if logged in
                 let userVote = null;
                 if (currentUser) {
                     const voteDoc = await db.collection('votes').doc(`${projectId}_${currentUser.uid}`).get();
@@ -2130,7 +2145,7 @@
                         </p>
                     `}
                     
-                    <div class="comments-list" id="commentsList">
+                    <div class="comments-list">
                         ${renderComments(comments)}
                     </div>
                 </div>
@@ -2329,10 +2344,6 @@
                 
                 await db.collection('comments').add(replyData);
                 
-                await db.collection('projects').doc(currentProjectId).update({
-                    comments: firebase.firestore.FieldValue.increment(1)
-                });
-                
                 document.getElementById(`reply-content-${parentId}`).value = '';
                 document.getElementById(`reply-form-${parentId}`).style.display = 'none';
                 openProjectModal(currentProjectId);
@@ -2374,52 +2385,62 @@
 
         // ==================== DELETE PROJECT ====================
         window.deleteProject = async function(projectId, event) {
-            event.stopPropagation();
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
             
             if (!currentUser) {
                 showNotification('Please sign in', 'warning');
                 return;
             }
             
-            if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) return;
+            if (!confirm('Delete this project? This cannot be undone.')) return;
             
             try {
-                // Get all comments for this project
-                const comments = await db.collection('comments')
-                    .where('projectId', '==', projectId)
-                    .get();
-                
-                // Get all votes for this project
-                const votes = await db.collection('votes')
-                    .where('projectId', '==', projectId)
-                    .get();
-                
-                // Get all favorites for this project
-                const favorites = await db.collection('favorites')
-                    .where('projectId', '==', projectId)
-                    .get();
-                
-                const batch = db.batch();
-                
-                // Delete all comments
-                comments.forEach(doc => batch.delete(doc.ref));
-                
-                // Delete all votes
-                votes.forEach(doc => batch.delete(doc.ref));
-                
-                // Delete all favorites
-                favorites.forEach(doc => batch.delete(doc.ref));
-                
-                // Delete the project
-                batch.delete(db.collection('projects').doc(projectId));
-                
-                await batch.commit();
-                
-                // Update local cache
-                userFavoritesCache.delete(projectId);
-                
-                showNotification('Project deleted successfully', 'success');
+                const projectRef = db.collection('projects').doc(projectId);
+                const projectDoc = await projectRef.get();
+
+                if (!projectDoc.exists) {
+                    showNotification('Project not found', 'warning');
+                    return;
+                }
+
+                if (projectDoc.data().userId !== currentUser.uid) {
+                    showNotification('You can only delete your own projects', 'error');
+                    return;
+                }
+
+                await projectRef.delete();
+
+                const [commentsSnap, favoritesSnap] = await Promise.all([
+                    db.collection('comments').where('projectId', '==', projectId).get(),
+                    db.collection('favorites').where('projectId', '==', projectId).get()
+                ]);
+
+                const cleanupBatch = db.batch();
+                commentsSnap.forEach(doc => cleanupBatch.delete(doc.ref));
+                favoritesSnap.forEach(doc => cleanupBatch.delete(doc.ref));
+                cleanupBatch.delete(db.collection('votes').doc(`${projectId}_${currentUser.uid}`));
+
+                try {
+                    await cleanupBatch.commit();
+                } catch (cleanupError) {
+                    console.warn('Cleanup after project deletion was partial:', cleanupError);
+                }
+
+                if (currentProjectId === projectId) {
+                    document.getElementById('projectModal').style.display = 'none';
+                    currentProjectId = null;
+                }
+
+                if (document.getElementById('profile').classList.contains('active')) {
+                    loadProfile();
+                }
+
+                showNotification('Project deleted', 'success');
             } catch (error) {
+                console.error('Error deleting project:', error);
                 showNotification(error.message, 'error');
             }
         };
@@ -2455,37 +2476,39 @@
             const sortSelect = document.getElementById('sortSelect');
             const categoryFilter = document.getElementById('categoryFilter');
             
-            let searchTimeout;
-            searchInput.addEventListener('input', () => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(loadProjects, 300);
+            [searchInput, sortSelect, categoryFilter].forEach(element => {
+                if (element) {
+                    element.addEventListener('input', loadProjects);
+                    element.addEventListener('change', loadProjects);
+                }
             });
-            
-            sortSelect.addEventListener('change', loadProjects);
-            categoryFilter.addEventListener('change', loadProjects);
         }
 
         function initializeModals() {
-            // Close buttons
-            document.querySelectorAll('.modal-close, .close-auth').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    document.getElementById('projectModal').style.display = 'none';
-                    document.getElementById('authModal').style.display = 'none';
-                });
+            const projectModal = document.getElementById('projectModal');
+            const authModal = document.getElementById('authModal');
+
+            document.querySelector('#projectModal .modal-close').addEventListener('click', (e) => {
+                e.stopPropagation();
+                projectModal.style.display = 'none';
+                currentProjectId = null;
+            });
+
+            document.querySelector('#authModal .modal-close').addEventListener('click', (e) => {
+                e.stopPropagation();
+                hideAuthModal();
             });
             
-            // Click outside to close
             window.addEventListener('click', (e) => {
-                if (e.target === document.getElementById('projectModal')) {
-                    document.getElementById('projectModal').style.display = 'none';
+                if (e.target === projectModal) {
+                    projectModal.style.display = 'none';
+                    currentProjectId = null;
                 }
-                if (e.target === document.getElementById('authModal')) {
-                    document.getElementById('authModal').style.display = 'none';
+                if (e.target === authModal) {
+                    hideAuthModal();
                 }
             });
 
-            // Prevent closing when clicking modal content
             document.querySelectorAll('.modal-content').forEach(content => {
                 content.addEventListener('click', (e) => {
                     e.stopPropagation();
