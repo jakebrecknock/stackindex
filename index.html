@@ -784,7 +784,7 @@
 
         .modal-content {
             background: var(--bg-secondary);
-            margin: 3rem auto;
+            margin: 2rem auto;
             padding: 2rem;
             width: 90%;
             max-width: 800px;
@@ -796,8 +796,8 @@
 
         .modal-close {
             position: absolute;
-            right: 1.5rem;
-            top: 1.5rem;
+            right: 1.25rem;
+            top: 1.25rem;
             font-size: 1.25rem;
             cursor: pointer;
             color: var(--text-tertiary);
@@ -809,11 +809,14 @@
             background: var(--bg-tertiary);
             border-radius: 10px;
             transition: all 0.2s;
+            z-index: 10;
+            border: 1px solid var(--border);
         }
 
         .modal-close:hover {
             background: var(--danger);
             color: white;
+            border-color: var(--danger);
         }
 
         /* Project Modal Content */
@@ -827,6 +830,7 @@
             color: var(--text-primary);
             margin-bottom: 0.75rem;
             padding-right: 3rem;
+            word-break: break-word;
         }
 
         .project-header-meta {
@@ -834,6 +838,7 @@
             gap: 1.5rem;
             color: var(--text-tertiary);
             font-size: 0.9375rem;
+            flex-wrap: wrap;
         }
 
         .project-header-meta i {
@@ -848,6 +853,8 @@
             margin: 1.5rem 0;
             line-height: 1.7;
             color: var(--text-secondary);
+            white-space: pre-wrap;
+            word-break: break-word;
         }
 
         .project-link-btn {
@@ -872,6 +879,7 @@
             display: flex;
             gap: 1rem;
             margin: 2rem 0;
+            flex-wrap: wrap;
         }
 
         .vote-btn {
@@ -898,6 +906,12 @@
             font-size: 1rem;
         }
 
+        .vote-btn.voted {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
         /* Comments Section */
         .comments-section {
             margin-top: 2rem;
@@ -922,6 +936,8 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .comment-author {
@@ -938,12 +954,15 @@
             color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 1rem;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
 
         .comment-actions {
             display: flex;
             gap: 1rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .comment-votes {
@@ -1704,7 +1723,6 @@
                     userName: currentUser.displayName || currentUser.email.split('@')[0],
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     upvotes: 0,
-                    downvotes: 0,
                     favorites: 0,
                     comments: 0
                 };
@@ -1984,18 +2002,24 @@
 
         // ==================== MODAL FUNCTIONS ====================
         window.openProjectModal = async function(projectId) {
-            currentProjectId = projectId;
             const modal = document.getElementById('projectModal');
             const content = document.getElementById('modalProjectContent');
             
+            currentProjectId = projectId;
             modal.style.display = 'block';
+            content.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading project...</div>';
             
             try {
                 const projectDoc = await db.collection('projects').doc(projectId).get();
-                if (!projectDoc.exists) return;
+                
+                if (!projectDoc.exists) {
+                    content.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Project not found</p></div>';
+                    return;
+                }
                 
                 const project = { id: projectDoc.id, ...projectDoc.data() };
                 
+                // Get comments
                 const commentsSnapshot = await db.collection('comments')
                     .where('projectId', '==', projectId)
                     .orderBy('createdAt', 'desc')
@@ -2006,14 +2030,24 @@
                     comments.push({ id: doc.id, ...doc.data() });
                 });
                 
-                displayProjectModal(project, comments);
+                // Get user's vote if logged in
+                let userVote = null;
+                if (currentUser) {
+                    const voteDoc = await db.collection('votes').doc(`${projectId}_${currentUser.uid}`).get();
+                    if (voteDoc.exists) {
+                        userVote = voteDoc.data().type;
+                    }
+                }
+                
+                displayProjectModal(project, comments, userVote);
             } catch (error) {
+                console.error('Error loading project:', error);
+                content.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading project</p></div>';
                 showNotification(error.message, 'error');
-                modal.style.display = 'none';
             }
         };
 
-        function displayProjectModal(project, comments) {
+        function displayProjectModal(project, comments, userVote = null) {
             const content = document.getElementById('modalProjectContent');
             
             content.innerHTML = `
@@ -2038,11 +2072,8 @@
                 </div>
                 
                 <div class="project-actions-modal">
-                    <button class="vote-btn" onclick="vote('${project.id}', 'up')">
+                    <button class="vote-btn ${userVote === 'up' ? 'voted' : ''}" onclick="vote('${project.id}', 'up')">
                         <i class="fas fa-arrow-up"></i> Upvote (${project.upvotes || 0})
-                    </button>
-                    <button class="vote-btn" onclick="vote('${project.id}', 'down')">
-                        <i class="fas fa-arrow-down"></i> Downvote (${project.downvotes || 0})
                     </button>
                 </div>
                 
@@ -2083,9 +2114,6 @@
                         <div class="comment-votes">
                             <button class="comment-vote-btn" onclick="voteComment('${comment.id}', 'up')">
                                 <i class="fas fa-arrow-up"></i> ${comment.upvotes || 0}
-                            </button>
-                            <button class="comment-vote-btn" onclick="voteComment('${comment.id}', 'down')">
-                                <i class="fas fa-arrow-down"></i> ${comment.downvotes || 0}
                             </button>
                         </div>
                         ${currentUser ? `
@@ -2129,40 +2157,31 @@
                     if (!projectDoc.exists) throw new Error('Project not found');
                     
                     let newUpvotes = projectDoc.data().upvotes || 0;
-                    let newDownvotes = projectDoc.data().downvotes || 0;
                     
                     if (voteDoc.exists) {
-                        const currentVote = voteDoc.data().type;
-                        if (currentVote === type) {
-                            if (type === 'up') newUpvotes--;
-                            else newDownvotes--;
-                            transaction.delete(voteRef);
-                        } else {
-                            if (type === 'up') {
-                                newUpvotes++;
-                                newDownvotes--;
-                            } else {
-                                newDownvotes++;
-                                newUpvotes--;
-                            }
-                            transaction.update(voteRef, { type });
-                        }
+                        // Remove vote
+                        newUpvotes--;
+                        transaction.delete(voteRef);
                     } else {
-                        if (type === 'up') newUpvotes++;
-                        else newDownvotes++;
+                        // Add vote
+                        newUpvotes++;
                         transaction.set(voteRef, {
                             userId: currentUser.uid,
                             projectId,
-                            type,
+                            type: 'up',
                             createdAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
                     }
                     
                     transaction.update(projectRef, {
-                        upvotes: newUpvotes,
-                        downvotes: newDownvotes
+                        upvotes: newUpvotes
                     });
                 });
+                
+                // Refresh modal to show updated vote count
+                if (currentProjectId === projectId) {
+                    openProjectModal(projectId);
+                }
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -2186,40 +2205,29 @@
                     if (!commentDoc.exists) throw new Error('Comment not found');
                     
                     let newUpvotes = commentDoc.data().upvotes || 0;
-                    let newDownvotes = commentDoc.data().downvotes || 0;
                     
                     if (voteDoc.exists) {
-                        const currentVote = voteDoc.data().type;
-                        if (currentVote === type) {
-                            if (type === 'up') newUpvotes--;
-                            else newDownvotes--;
-                            transaction.delete(voteRef);
-                        } else {
-                            if (type === 'up') {
-                                newUpvotes++;
-                                newDownvotes--;
-                            } else {
-                                newDownvotes++;
-                                newUpvotes--;
-                            }
-                            transaction.update(voteRef, { type });
-                        }
+                        newUpvotes--;
+                        transaction.delete(voteRef);
                     } else {
-                        if (type === 'up') newUpvotes++;
-                        else newDownvotes++;
+                        newUpvotes++;
                         transaction.set(voteRef, {
                             userId: currentUser.uid,
                             commentId,
-                            type,
+                            type: 'up',
                             createdAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
                     }
                     
                     transaction.update(commentRef, {
-                        upvotes: newUpvotes,
-                        downvotes: newDownvotes
+                        upvotes: newUpvotes
                     });
                 });
+                
+                // Refresh modal
+                if (currentProjectId) {
+                    openProjectModal(currentProjectId);
+                }
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -2241,7 +2249,6 @@
                     userName: currentUser.displayName || currentUser.email.split('@')[0],
                     parentId: null,
                     upvotes: 0,
-                    downvotes: 0,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
@@ -2278,7 +2285,6 @@
                     userName: currentUser.displayName || currentUser.email.split('@')[0],
                     parentId,
                     upvotes: 0,
-                    downvotes: 0,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
@@ -2391,13 +2397,16 @@
         }
 
         function initializeModals() {
+            // Close buttons
             document.querySelectorAll('.modal-close, .close-auth').forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     document.getElementById('projectModal').style.display = 'none';
                     document.getElementById('authModal').style.display = 'none';
                 });
             });
             
+            // Click outside to close
             window.addEventListener('click', (e) => {
                 if (e.target === document.getElementById('projectModal')) {
                     document.getElementById('projectModal').style.display = 'none';
@@ -2405,6 +2414,13 @@
                 if (e.target === document.getElementById('authModal')) {
                     document.getElementById('authModal').style.display = 'none';
                 }
+            });
+
+            // Prevent closing when clicking modal content
+            document.querySelectorAll('.modal-content').forEach(content => {
+                content.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
             });
         }
 
