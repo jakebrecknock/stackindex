@@ -8,7 +8,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts - Professional typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Firebase SDKs -->
@@ -17,7 +17,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     
     <style>
-        /* All existing styles remain exactly the same */
         * {
             margin: 0;
             padding: 0;
@@ -26,6 +25,7 @@
         }
 
         :root {
+            /* Professional color palette */
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --secondary: #64748b;
@@ -34,6 +34,7 @@
             --danger: #ef4444;
             --info: #3b82f6;
             
+            /* Light mode */
             --bg-primary: #f8fafc;
             --bg-secondary: #ffffff;
             --bg-tertiary: #f1f5f9;
@@ -48,9 +49,11 @@
             --hover-bg: #f8fafc;
         }
 
+        /* Dark Mode */
         .dark-mode {
             --primary: #3b82f6;
             --primary-dark: #2563eb;
+            
             --bg-primary: #0f172a;
             --bg-secondary: #1e293b;
             --bg-tertiary: #334155;
@@ -78,6 +81,7 @@
             min-height: 100vh;
         }
 
+        /* Sidebar - Professional and clean */
         .sidebar {
             width: 280px;
             background: var(--bg-secondary);
@@ -302,6 +306,7 @@
             opacity: 1;
         }
 
+        /* Main Content */
         .main-content {
             flex: 1;
             margin-left: 280px;
@@ -322,6 +327,7 @@
             to { opacity: 1; }
         }
 
+        /* Dashboard Header */
         .dashboard-header {
             margin-bottom: 2rem;
         }
@@ -405,6 +411,7 @@
             border-color: var(--primary);
         }
 
+        /* Projects Grid */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -420,6 +427,7 @@
             transition: all 0.2s;
             cursor: pointer;
             position: relative;
+            overflow: hidden;
         }
 
         .project-card:hover {
@@ -434,6 +442,7 @@
             color: var(--text-primary);
             margin-bottom: 0.75rem;
             padding-right: 2.5rem;
+            padding-left: ${currentUser ? '2.5rem' : '0'};
         }
 
         .project-description {
@@ -483,6 +492,12 @@
             border: 1px solid var(--border);
         }
 
+        .custom-tag {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
         .project-stats {
             display: flex;
             gap: 1.25rem;
@@ -504,43 +519,62 @@
 
         .favorite-btn {
             position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
+            top: 1rem;
+            right: 1rem;
             color: var(--danger);
             cursor: pointer;
             font-size: 1.25rem;
             z-index: 2;
             opacity: 0.7;
             transition: opacity 0.2s;
+            background: var(--bg-secondary);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px var(--shadow);
         }
 
         .favorite-btn:hover {
             opacity: 1;
+            transform: scale(1.1);
         }
 
         .favorite-btn.active {
             opacity: 1;
+            color: var(--danger);
         }
 
         .delete-btn {
             position: absolute;
-            top: 1.5rem;
-            left: 1.5rem;
+            top: 1rem;
+            left: 1rem;
             color: var(--danger);
             cursor: pointer;
             font-size: 1rem;
             z-index: 2;
             opacity: 0.7;
             transition: opacity 0.2s;
-            background: var(--bg-tertiary);
-            padding: 0.5rem;
+            background: var(--bg-secondary);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 8px;
+            box-shadow: 0 2px 8px var(--shadow);
         }
 
         .delete-btn:hover {
             opacity: 1;
+            transform: scale(1.1);
+            background: var(--danger);
+            color: white;
         }
 
+        /* Form Styles */
         .form-container {
             max-width: 700px;
             margin: 0 auto;
@@ -661,6 +695,7 @@
             background: var(--primary-dark);
         }
 
+        /* Profile Styles */
         .profile-header {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
@@ -753,6 +788,7 @@
             gap: 1.5rem;
         }
 
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -780,8 +816,8 @@
 
         .modal-close {
             position: absolute;
-            right: 1.5rem;
-            top: 1.5rem;
+            right: 1.25rem;
+            top: 1.25rem;
             font-size: 1.25rem;
             cursor: pointer;
             color: var(--text-tertiary);
@@ -803,6 +839,7 @@
             border-color: var(--danger);
         }
 
+        /* Project Modal Content */
         .project-header {
             margin-bottom: 2rem;
         }
@@ -895,6 +932,7 @@
             border-color: var(--primary);
         }
 
+        /* Comments Section */
         .comments-section {
             margin-top: 2rem;
             border-top: 1px solid var(--border);
@@ -1061,6 +1099,7 @@
             border-color: var(--primary);
         }
 
+        /* Auth Modal */
         .auth-modal {
             max-width: 400px;
         }
@@ -1155,6 +1194,7 @@
             border-color: var(--primary);
         }
 
+        /* Loading */
         .loading {
             text-align: center;
             padding: 3rem;
@@ -1167,6 +1207,7 @@
             margin-right: 0.5rem;
         }
 
+        /* Notification */
         .notification {
             position: fixed;
             bottom: 20px;
@@ -1195,6 +1236,7 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
+        /* Empty States */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -1231,6 +1273,7 @@
             background: var(--primary-dark);
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -1476,16 +1519,12 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Disable all Firebase logs
-        firebase.firestore.setLogLevel('silent');
-
-        // Enable persistence with error handling
-        db.enablePersistence({ experimentalForceOwningTab: true })
-            .catch(err => {
-                if (err.code === 'failed-precondition') {
-                    console.log('Multiple tabs open');
-                }
-            });
+        // Enable offline persistence
+        db.enablePersistence().catch(err => {
+            if (err.code === 'failed-precondition') {
+                console.log('Multiple tabs open');
+            }
+        });
 
         // Available tags
         const AVAILABLE_TAGS = ['Game', 'Tool', 'Website', 'Mobile App', 'AI/ML', 'Utility', 'Creative'];
@@ -1494,12 +1533,20 @@
         let currentUser = null;
         let currentProjectId = null;
         let selectedTags = new Set();
+        let projectsUnsubscribe = null;
+        let userFavoritesCache = new Set();
 
         // ==================== AUTH FUNCTIONS ====================
         auth.onAuthStateChanged(user => {
             currentUser = user;
             updateAuthUI();
+            if (projectsUnsubscribe) {
+                projectsUnsubscribe();
+            }
             loadProjects();
+            if (user) {
+                loadUserFavorites();
+            }
         });
 
         function updateAuthUI() {
@@ -1576,6 +1623,7 @@
         window.logout = async function() {
             try {
                 await auth.signOut();
+                userFavoritesCache.clear();
                 showNotification('Signed out', 'success');
                 document.querySelector('[data-tab="dashboard"]').click();
             } catch (error) {
@@ -1617,6 +1665,7 @@
                         if (currentUser) {
                             loadProfile();
                         } else {
+                            showNotification('Please sign in to view your profile', 'warning');
                             showAuthModal();
                             document.querySelector('[data-tab="dashboard"]').click();
                         }
@@ -1720,89 +1769,92 @@
             });
         }
 
+        // ==================== LOAD USER FAVORITES ====================
+        async function loadUserFavorites() {
+            if (!currentUser) return;
+            
+            try {
+                const favSnapshot = await db.collection('favorites')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                
+                userFavoritesCache.clear();
+                favSnapshot.forEach(doc => {
+                    userFavoritesCache.add(doc.data().projectId);
+                });
+            } catch (error) {
+                console.error('Error loading favorites:', error);
+            }
+        }
+
         // ==================== PROJECTS FUNCTIONS ====================
         function loadProjects() {
             const projectsGrid = document.getElementById('projectsGrid');
+            let query = db.collection('projects');
             
-            db.collection('projects').get()
-                .then((snapshot) => {
-                    let projects = [];
-                    snapshot.forEach(doc => {
-                        projects.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    // Sort based on selected option
-                    const sortBy = document.getElementById('sortSelect')?.value || 'newest';
-                    
-                    switch(sortBy) {
-                        case 'newest':
-                            projects.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-                            break;
-                        case 'oldest':
-                            projects.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
-                            break;
-                        case 'mostUpvoted':
-                            projects.sort((a, b) => (b.upvotes || 0) - (a.upvotes || 0));
-                            break;
-                        case 'mostFavorited':
-                            projects.sort((a, b) => (b.favorites || 0) - (a.favorites || 0));
-                            break;
-                    }
-                    
-                    // Apply category filter
-                    const categoryFilter = document.getElementById('categoryFilter')?.value;
-                    if (categoryFilter && categoryFilter !== 'all') {
-                        projects = projects.filter(p => p.tags && p.tags.includes(categoryFilter));
-                    }
-                    
-                    // Apply search filter
-                    const searchTerm = document.getElementById('searchInput')?.value?.toLowerCase();
-                    if (searchTerm) {
-                        projects = projects.filter(p => 
-                            p.name?.toLowerCase().includes(searchTerm) ||
-                            p.description?.toLowerCase().includes(searchTerm) ||
-                            p.userName?.toLowerCase().includes(searchTerm)
-                        );
-                    }
-                    
-                    // Get user favorites if logged in
-                    if (currentUser) {
-                        db.collection('favorites').where('userId', '==', currentUser.uid).get()
-                            .then(favSnapshot => {
-                                const userFavorites = new Set();
-                                favSnapshot.forEach(doc => {
-                                    userFavorites.add(doc.data().projectId);
-                                });
-                                displayProjects(projects, userFavorites);
-                            })
-                            .catch(() => {
-                                displayProjects(projects, new Set());
-                            });
-                    } else {
-                        displayProjects(projects, new Set());
-                    }
-                })
-                .catch((error) => {
-                    projectsGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading projects. Please check your Firebase connection.</p></div>';
+            const sortBy = document.getElementById('sortSelect')?.value || 'newest';
+            
+            switch(sortBy) {
+                case 'newest':
+                    query = query.orderBy('createdAt', 'desc');
+                    break;
+                case 'oldest':
+                    query = query.orderBy('createdAt', 'asc');
+                    break;
+                case 'mostUpvoted':
+                    query = query.orderBy('upvotes', 'desc');
+                    break;
+                case 'mostFavorited':
+                    query = query.orderBy('favorites', 'desc');
+                    break;
+                default:
+                    query = query.orderBy('createdAt', 'desc');
+            }
+            
+            if (projectsUnsubscribe) {
+                projectsUnsubscribe();
+            }
+            
+            projectsUnsubscribe = query.onSnapshot(async (snapshot) => {
+                let projects = [];
+                snapshot.forEach(doc => {
+                    projects.push({ id: doc.id, ...doc.data() });
                 });
+                
+                const categoryFilter = document.getElementById('categoryFilter')?.value;
+                if (categoryFilter && categoryFilter !== 'all') {
+                    projects = projects.filter(p => p.tags && p.tags.includes(categoryFilter));
+                }
+                
+                const searchTerm = document.getElementById('searchInput')?.value?.toLowerCase();
+                if (searchTerm) {
+                    projects = projects.filter(p => 
+                        p.name?.toLowerCase().includes(searchTerm) ||
+                        p.description?.toLowerCase().includes(searchTerm) ||
+                        p.userName?.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                displayProjects(projects);
+            });
         }
 
-        function displayProjects(projects, userFavorites = new Set()) {
+        function displayProjects(projects) {
             const projectsGrid = document.getElementById('projectsGrid');
             
             if (projects.length === 0) {
                 projectsGrid.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-folder-open"></i>
-                        <p>No projects found. Create your first project!</p>
-                        <button onclick="document.querySelector('[data-tab=\\"create\\"]').click()">Create Project</button>
+                        <p>No projects found</p>
+                        <button onclick="document.querySelector('[data-tab=\"create\"]').click()">Create your first project</button>
                     </div>
                 `;
                 return;
             }
             
             projectsGrid.innerHTML = projects.map(project => {
-                const isFavorited = userFavorites.has(project.id);
+                const isFavorited = userFavoritesCache.has(project.id);
                 
                 return `
                 <div class="project-card" onclick="openProjectModal('${project.id}')">
@@ -1822,7 +1874,7 @@
                         <span class="project-author">
                             <i class="fas fa-user"></i> ${escapeHtml(project.userName)}
                         </span>
-                        <span>${project.createdAt ? new Date(project.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}</span>
+                        <span>${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                     </div>
                     <div class="project-tags">
                         ${project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
@@ -1856,6 +1908,7 @@
                     await projectRef.update({
                         favorites: firebase.firestore.FieldValue.increment(-1)
                     });
+                    userFavoritesCache.delete(projectId);
                 } else {
                     await favoriteRef.set({
                         userId: currentUser.uid,
@@ -1865,9 +1918,10 @@
                     await projectRef.update({
                         favorites: firebase.firestore.FieldValue.increment(1)
                     });
+                    userFavoritesCache.add(projectId);
                 }
             } catch (error) {
-                showNotification('Error updating favorite', 'error');
+                showNotification(error.message, 'error');
             }
         };
 
@@ -1878,9 +1932,9 @@
             const profileContent = document.getElementById('profileContent');
             
             try {
-                // Get user's projects
                 const projectsSnapshot = await db.collection('projects')
                     .where('userId', '==', currentUser.uid)
+                    .orderBy('createdAt', 'desc')
                     .get();
                 
                 const userProjects = [];
@@ -1888,17 +1942,10 @@
                     userProjects.push({ id: doc.id, ...doc.data() });
                 });
                 
-                // Sort by date
-                userProjects.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-                
-                // Get user's favorites
-                const favoritesSnapshot = await db.collection('favorites')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                
+                // Get favorite projects
                 const favoriteProjects = [];
-                for (const favDoc of favoritesSnapshot.docs) {
-                    const projectDoc = await db.collection('projects').doc(favDoc.data().projectId).get();
+                for (const projectId of userFavoritesCache) {
+                    const projectDoc = await db.collection('projects').doc(projectId).get();
                     if (projectDoc.exists) {
                         favoriteProjects.push({ id: projectDoc.id, ...projectDoc.data() });
                     }
@@ -1906,7 +1953,7 @@
                 
                 displayProfile(userProjects, favoriteProjects);
             } catch (error) {
-                profileContent.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading profile</p></div>';
+                showNotification(error.message, 'error');
             }
         }
 
@@ -1946,6 +1993,9 @@
                             <div class="project-card" onclick="openProjectModal('${project.id}')">
                                 <h3>${escapeHtml(project.name)}</h3>
                                 <p class="project-description">${escapeHtml(project.description?.substring(0, 100))}...</p>
+                                <div class="project-tags">
+                                    ${project.tags ? project.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                                </div>
                                 <div class="project-stats">
                                     <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
                                     <span><i class="fas fa-heart"></i> ${project.favorites || 0}</span>
@@ -1962,6 +2012,9 @@
                             <div class="project-card" onclick="openProjectModal('${project.id}')">
                                 <h3>${escapeHtml(project.name)}</h3>
                                 <p class="project-description">${escapeHtml(project.description?.substring(0, 100))}...</p>
+                                <div class="project-tags">
+                                    ${project.tags ? project.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                                </div>
                                 <div class="project-stats">
                                     <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
                                     <span><i class="fas fa-heart"></i> ${project.favorites || 0}</span>
@@ -2016,20 +2069,24 @@
                     comments.push({ id: doc.id, ...doc.data() });
                 });
                 
-                // Check if user has voted
-                let userHasVoted = false;
+                // Get user's vote if logged in
+                let userVote = null;
                 if (currentUser) {
                     const voteDoc = await db.collection('votes').doc(`${projectId}_${currentUser.uid}`).get();
-                    userHasVoted = voteDoc.exists;
+                    if (voteDoc.exists) {
+                        userVote = voteDoc.data().type;
+                    }
                 }
                 
-                displayProjectModal(project, comments, userHasVoted);
+                displayProjectModal(project, comments, userVote);
             } catch (error) {
+                console.error('Error loading project:', error);
                 content.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading project</p></div>';
+                showNotification(error.message, 'error');
             }
         };
 
-        function displayProjectModal(project, comments, userHasVoted = false) {
+        function displayProjectModal(project, comments, userVote = null) {
             const content = document.getElementById('modalProjectContent');
             
             content.innerHTML = `
@@ -2037,7 +2094,7 @@
                     <h2>${escapeHtml(project.name)}</h2>
                     <div class="project-header-meta">
                         <span><i class="fas fa-user"></i> ${escapeHtml(project.userName)}</span>
-                        <span><i class="fas fa-calendar"></i> ${project.createdAt ? new Date(project.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}</span>
+                        <span><i class="fas fa-calendar"></i> ${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                     </div>
                 </div>
                 
@@ -2054,7 +2111,7 @@
                 </div>
                 
                 <div class="project-actions-modal">
-                    <button class="vote-btn ${userHasVoted ? 'voted' : ''}" onclick="vote('${project.id}')">
+                    <button class="vote-btn ${userVote === 'up' ? 'voted' : ''}" onclick="vote('${project.id}', 'up')">
                         <i class="fas fa-arrow-up"></i> Upvote (${project.upvotes || 0})
                     </button>
                 </div>
@@ -2073,7 +2130,7 @@
                         </p>
                     `}
                     
-                    <div class="comments-list">
+                    <div class="comments-list" id="commentsList">
                         ${renderComments(comments)}
                     </div>
                 </div>
@@ -2089,12 +2146,12 @@
                 <div class="comment" id="comment-${comment.id}">
                     <div class="comment-header">
                         <span class="comment-author">${escapeHtml(comment.userName)}</span>
-                        <span class="comment-date">${comment.createdAt ? new Date(comment.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}</span>
+                        <span class="comment-date">${comment.createdAt ? new Date(comment.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                     </div>
                     <div class="comment-content">${escapeHtml(comment.content)}</div>
                     <div class="comment-actions">
                         <div class="comment-votes">
-                            <button class="comment-vote-btn" onclick="voteComment('${comment.id}')">
+                            <button class="comment-vote-btn" onclick="voteComment('${comment.id}', 'up')">
                                 <i class="fas fa-arrow-up"></i> ${comment.upvotes || 0}
                             </button>
                         </div>
@@ -2121,7 +2178,7 @@
         }
 
         // ==================== VOTING FUNCTIONS ====================
-        window.vote = async function(projectId) {
+        window.vote = async function(projectId, type) {
             if (!currentUser) {
                 showNotification('Please sign in to vote', 'warning');
                 showAuthModal();
@@ -2134,32 +2191,42 @@
                 
                 const voteDoc = await voteRef.get();
                 
-                if (voteDoc.exists) {
-                    await voteRef.delete();
-                    await projectRef.update({
-                        upvotes: firebase.firestore.FieldValue.increment(-1)
+                await db.runTransaction(async (transaction) => {
+                    const projectDoc = await transaction.get(projectRef);
+                    if (!projectDoc.exists) throw new Error('Project not found');
+                    
+                    let newUpvotes = projectDoc.data().upvotes || 0;
+                    
+                    if (voteDoc.exists) {
+                        // Remove vote
+                        newUpvotes--;
+                        transaction.delete(voteRef);
+                    } else {
+                        // Add vote
+                        newUpvotes++;
+                        transaction.set(voteRef, {
+                            userId: currentUser.uid,
+                            projectId,
+                            type: 'up',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+                    
+                    transaction.update(projectRef, {
+                        upvotes: newUpvotes
                     });
-                } else {
-                    await voteRef.set({
-                        userId: currentUser.uid,
-                        projectId: projectId,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    await projectRef.update({
-                        upvotes: firebase.firestore.FieldValue.increment(1)
-                    });
-                }
+                });
                 
-                // Refresh the modal
+                // Refresh modal to show updated vote count
                 if (currentProjectId === projectId) {
                     openProjectModal(projectId);
                 }
             } catch (error) {
-                showNotification('Error voting', 'error');
+                showNotification(error.message, 'error');
             }
         };
 
-        window.voteComment = async function(commentId) {
+        window.voteComment = async function(commentId, type) {
             if (!currentUser) {
                 showNotification('Please sign in to vote', 'warning');
                 showAuthModal();
@@ -2172,27 +2239,36 @@
                 
                 const voteDoc = await voteRef.get();
                 
-                if (voteDoc.exists) {
-                    await voteRef.delete();
-                    await commentRef.update({
-                        upvotes: firebase.firestore.FieldValue.increment(-1)
+                await db.runTransaction(async (transaction) => {
+                    const commentDoc = await transaction.get(commentRef);
+                    if (!commentDoc.exists) throw new Error('Comment not found');
+                    
+                    let newUpvotes = commentDoc.data().upvotes || 0;
+                    
+                    if (voteDoc.exists) {
+                        newUpvotes--;
+                        transaction.delete(voteRef);
+                    } else {
+                        newUpvotes++;
+                        transaction.set(voteRef, {
+                            userId: currentUser.uid,
+                            commentId,
+                            type: 'up',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+                    
+                    transaction.update(commentRef, {
+                        upvotes: newUpvotes
                     });
-                } else {
-                    await voteRef.set({
-                        userId: currentUser.uid,
-                        commentId: commentId,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    await commentRef.update({
-                        upvotes: firebase.firestore.FieldValue.increment(1)
-                    });
-                }
+                });
                 
+                // Refresh modal
                 if (currentProjectId) {
                     openProjectModal(currentProjectId);
                 }
             } catch (error) {
-                showNotification('Error voting', 'error');
+                showNotification(error.message, 'error');
             }
         };
 
@@ -2224,7 +2300,7 @@
                 document.getElementById('newComment').value = '';
                 openProjectModal(projectId);
             } catch (error) {
-                showNotification('Error posting comment', 'error');
+                showNotification(error.message, 'error');
             }
         };
 
@@ -2253,11 +2329,15 @@
                 
                 await db.collection('comments').add(replyData);
                 
+                await db.collection('projects').doc(currentProjectId).update({
+                    comments: firebase.firestore.FieldValue.increment(1)
+                });
+                
                 document.getElementById(`reply-content-${parentId}`).value = '';
                 document.getElementById(`reply-form-${parentId}`).style.display = 'none';
                 openProjectModal(currentProjectId);
             } catch (error) {
-                showNotification('Error posting reply', 'error');
+                showNotification(error.message, 'error');
             }
         };
 
@@ -2288,7 +2368,7 @@
                 
                 openProjectModal(currentProjectId);
             } catch (error) {
-                showNotification('Error deleting comment', 'error');
+                showNotification(error.message, 'error');
             }
         };
 
@@ -2301,22 +2381,46 @@
                 return;
             }
             
-            if (!confirm('Delete this project?')) return;
+            if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) return;
             
             try {
+                // Get all comments for this project
                 const comments = await db.collection('comments')
                     .where('projectId', '==', projectId)
                     .get();
                 
+                // Get all votes for this project
+                const votes = await db.collection('votes')
+                    .where('projectId', '==', projectId)
+                    .get();
+                
+                // Get all favorites for this project
+                const favorites = await db.collection('favorites')
+                    .where('projectId', '==', projectId)
+                    .get();
+                
                 const batch = db.batch();
+                
+                // Delete all comments
                 comments.forEach(doc => batch.delete(doc.ref));
+                
+                // Delete all votes
+                votes.forEach(doc => batch.delete(doc.ref));
+                
+                // Delete all favorites
+                favorites.forEach(doc => batch.delete(doc.ref));
+                
+                // Delete the project
                 batch.delete(db.collection('projects').doc(projectId));
                 
                 await batch.commit();
                 
-                showNotification('Project deleted', 'success');
+                // Update local cache
+                userFavoritesCache.delete(projectId);
+                
+                showNotification('Project deleted successfully', 'success');
             } catch (error) {
-                showNotification('Error deleting project', 'error');
+                showNotification(error.message, 'error');
             }
         };
 
@@ -2351,15 +2455,18 @@
             const sortSelect = document.getElementById('sortSelect');
             const categoryFilter = document.getElementById('categoryFilter');
             
-            [searchInput, sortSelect, categoryFilter].forEach(element => {
-                if (element) {
-                    element.addEventListener('input', loadProjects);
-                    element.addEventListener('change', loadProjects);
-                }
+            let searchTimeout;
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(loadProjects, 300);
             });
+            
+            sortSelect.addEventListener('change', loadProjects);
+            categoryFilter.addEventListener('change', loadProjects);
         }
 
         function initializeModals() {
+            // Close buttons
             document.querySelectorAll('.modal-close, .close-auth').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -2368,6 +2475,7 @@
                 });
             });
             
+            // Click outside to close
             window.addEventListener('click', (e) => {
                 if (e.target === document.getElementById('projectModal')) {
                     document.getElementById('projectModal').style.display = 'none';
@@ -2377,6 +2485,7 @@
                 }
             });
 
+            // Prevent closing when clicking modal content
             document.querySelectorAll('.modal-content').forEach(content => {
                 content.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -2392,8 +2501,6 @@
             initializeProjectForm();
             initializeSearchAndFilters();
             initializeModals();
-            
-            // Load projects
             loadProjects();
 
             // Auth tabs
