@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StackIndex - Share Your Vibe Coded Projects</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="light-mode">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fas fa-palette"></i>
+                <h1>StackIndex</h1>
+            </div>
+            
+            <div class="theme-toggle">
+                <i class="fas fa-sun"></i>
+                <label class="switch">
+                    <input type="checkbox" id="themeSwitch">
+                    <span class="slider round"></span>
+                </label>
+                <i class="fas fa-moon"></i>
+            </div>
+
+            <div class="nav-links">
+                <button class="nav-btn active" data-tab="dashboard">
+                    <i class="fas fa-compass"></i> Discover
+                </button>
+                <button class="nav-btn" data-tab="create">
+                    <i class="fas fa-plus-circle"></i> Share Project
+                </button>
+                <button class="nav-btn" data-tab="about">
+                    <i class="fas fa-info-circle"></i> About
+                </button>
+            </div>
+
+            <div class="user-section">
+                <div id="authContainer"></div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="dashboard-header">
+                    <h2>Discover Vibe Coded Projects</h2>
+                    <div class="search-sort">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search projects...">
+                        </div>
+                        <select id="sortSelect">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="mostUpvoted">Most Upvoted</option>
+                            <option value="mostDownvoted">Most Downvoted</option>
+                        </select>
+                        <select id="categoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="Game">Game</option>
+                            <option value="Tool">Tool</option>
+                            <option value="Website">Website</option>
+                            <option value="Mobile App">Mobile App</option>
+                            <option value="AI/ML">AI/ML</option>
+                            <option value="Utility">Utility</option>
+                            <option value="Creative">Creative</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Projects loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Create Tab -->
+            <div id="create" class="tab-content">
+                <h2>Share Your Creation</h2>
+                <form id="projectForm" class="project-form">
+                    <div class="form-group">
+                        <label>Project Name *</label>
+                        <input type="text" id="projectName" required maxlength="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea id="projectDescription" required maxlength="1000"></textarea>
+                        <small><span id="descCount">0</span>/1000</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Project URL/Link *</label>
+                        <input type="url" id="projectLink" required placeholder="https://...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tags (Select up to 5)</label>
+                        <div class="tags-selector" id="tagsSelector">
+                            <!-- Tags populated via JS -->
+                        </div>
+                        <small id="tagCount">0/5 selected</small>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-upload"></i> Publish Project
+                    </button>
+                </form>
+            </div>
+
+            <!-- About Tab -->
+            <div id="about" class="tab-content">
+                <h2>About StackIndex</h2>
+                <div class="about-content">
+                    <div class="about-card">
+                        <i class="fas fa-heart"></i>
+                        <h3>Our Mission</h3>
+                        <p>StackIndex is a vibrant community for developers who "vibe code" – creating amazing projects through intuition and joy. Share your creations, discover inspiration, and connect with fellow makers.</p>
+                    </div>
+                    
+                    <div class="about-card">
+                        <i class="fas fa-code"></i>
+                        <h3>How It Works</h3>
+                        <p>Share your project with a description, link, and up to 5 tags. Upvote projects you love, comment with feedback, and build your portfolio in a supportive environment.</p>
+                    </div>
+                    
+                    <div class="about-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Community Guidelines</h3>
+                        <p>Be kind, give constructive feedback, respect others' work, and have fun! Projects of all skill levels are welcome – we're all here to grow together.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Project Modal -->
+        <div id="projectModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modalProjectContent"></div>
+            </div>
+        </div>
+
+        <!-- Auth Modal -->
+        <div id="authModal" class="modal">
+            <div class="modal-content auth-modal">
+                <span class="close-auth">&times;</span>
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-auth="login">Login</button>
+                    <button class="auth-tab" data-auth="signup">Sign Up</button>
+                </div>
+                
+                <form id="loginForm" class="auth-form active">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <button type="submit" class="auth-btn">Login</button>
+                </form>
+                
+                <form id="signupForm" class="auth-form">
+                    <input type="text" id="signupName" placeholder="Display Name" required>
+                    <input type="email" id="signupEmail" placeholder="Email" required>
+                    <input type="password" id="signupPassword" placeholder="Password (min 6 chars)" required>
+                    <button type="submit" class="auth-btn">Sign Up</button>
+                </form>
+                
+                <button id="googleAuth" class="google-btn">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
