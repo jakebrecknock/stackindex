@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CodeCove - Share Your Vibe Coded Projects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Index - Professional Project Hub</title>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Google Fonts for more fun typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Professional typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -21,68 +21,59 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Fredoka', 'Segoe UI', sans-serif;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.2s;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         :root {
-            /* Fun retro gaming theme */
-            --primary: #FF6B9D;    /* Bubblegum pink */
-            --secondary: #6B5CA5;   /* Purple */
-            --accent: #FFD166;       /* Mustard yellow */
-            --success: #06D6A0;      /* Mint */
-            --warning: #FF9F1C;       /* Orange */
-            --danger: #EF476F;        /* Watermelon */
+            /* Professional color palette */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
             
             /* Light mode */
-            --bg-primary-light: #FFF9F0;  /* Cream */
-            --bg-secondary-light: #FFFFFF;
-            --text-primary-light: #2D3047;
-            --text-secondary-light: #6B6B8B;
-            --border-light: #FFE5D9;
-            --shadow-light: rgba(255, 107, 157, 0.2);
-            --card-bg-light: #FFFFFF;
-            
-            /* Dark mode */
-            --bg-primary-dark: #1A1B2F;
-            --bg-secondary-dark: #2A2C44;
-            --text-primary-dark: #FFFFFF;
-            --text-secondary-dark: #B8B9D0;
-            --border-dark: #3D3F5E;
-            --shadow-dark: rgba(0, 0, 0, 0.4);
-            --card-bg-dark: #2A2C44;
-        }
-
-        /* Light Mode */
-        .light-mode {
-            --bg-primary: var(--bg-primary-light);
-            --bg-secondary: var(--bg-secondary-light);
-            --text-primary: var(--text-primary-light);
-            --text-secondary: var(--text-secondary-light);
-            --border: var(--border-light);
-            --shadow: var(--shadow-light);
-            --card-bg: var(--card-bg-light);
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --border: #e2e8f0;
+            --border-focus: #94a3b8;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --shadow-lg: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --hover-bg: #f8fafc;
         }
 
         /* Dark Mode */
         .dark-mode {
-            --bg-primary: var(--bg-primary-dark);
-            --bg-secondary: var(--bg-secondary-dark);
-            --text-primary: var(--text-primary-dark);
-            --text-secondary: var(--text-secondary-dark);
-            --border: var(--border-dark);
-            --shadow: var(--shadow-dark);
-            --card-bg: var(--card-bg-dark);
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border: #334155;
+            --border-focus: #475569;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-lg: rgba(0, 0, 0, 0.4);
+            --card-bg: #1e293b;
+            --hover-bg: #2d3a4f;
         }
 
         body {
             background-color: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            background-image: radial-gradient(circle at 10% 20%, rgba(255, 107, 157, 0.1) 0%, transparent 20%),
-                              radial-gradient(circle at 90% 50%, rgba(107, 92, 165, 0.1) 0%, transparent 25%),
-                              radial-gradient(circle at 30% 80%, rgba(255, 209, 102, 0.1) 0%, transparent 30%);
-            background-attachment: fixed;
+            line-height: 1.5;
+            font-size: 16px;
         }
 
         .app-container {
@@ -90,67 +81,58 @@
             min-height: 100vh;
         }
 
-        /* Sidebar - Now with fun shapes */
+        /* Sidebar - Professional and clean */
         .sidebar {
             width: 280px;
             background: var(--bg-secondary);
-            padding: 2rem 1.5rem;
-            border-right: 3px solid var(--primary);
+            border-right: 1px solid var(--border);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             z-index: 100;
-            box-shadow: 5px 0 15px var(--shadow);
-            border-radius: 0 20px 20px 0;
+            padding: 2rem 1rem;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-            background: var(--bg-primary);
-            padding: 1rem;
-            border-radius: 20px;
-            border: 2px solid var(--primary);
-            transform: rotate(-1deg);
+        .sidebar-header {
+            padding: 0 0.5rem 2rem 0.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
         }
 
-        .logo i {
-            font-size: 2.5rem;
+        .sidebar-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
             color: var(--primary);
-            animation: bounce 2s infinite;
+            letter-spacing: -0.02em;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .logo h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
+        .sidebar-header p {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            margin-top: 0.25rem;
         }
 
         .theme-toggle {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
             margin-bottom: 2rem;
-            padding: 0.8rem;
-            background: var(--bg-primary);
-            border-radius: 40px;
-            border: 2px solid var(--border);
+        }
+
+        .theme-toggle span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
 
         .switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 30px;
+            width: 48px;
+            height: 24px;
         }
 
         .switch input {
@@ -166,146 +148,162 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            transition: .4s;
+            background-color: var(--secondary);
+            transition: .2s;
+            border-radius: 24px;
         }
 
         .slider:before {
             position: absolute;
-            content: "☀️";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
             background-color: white;
-            transition: .4s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
+            transition: .2s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
         }
 
         input:checked + .slider:before {
-            content: "🌙";
-            transform: translateX(30px);
-        }
-
-        .slider.round {
-            border-radius: 30px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
+            transform: translateX(24px);
         }
 
         .nav-links {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
-            margin-bottom: 2rem;
+            gap: 0.5rem;
         }
 
         .nav-btn {
-            padding: 1.2rem;
+            padding: 0.875rem 1rem;
             border: none;
-            background: var(--bg-primary);
+            background: transparent;
             color: var(--text-secondary);
-            font-size: 1.1rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
             text-align: left;
             cursor: pointer;
-            border-radius: 15px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            transition: all 0.3s;
+            gap: 0.75rem;
+            transition: all 0.2s;
             width: 100%;
-            border: 2px solid transparent;
         }
 
         .nav-btn i {
-            width: 24px;
-            font-size: 1.2rem;
+            width: 20px;
+            font-size: 1rem;
+            color: var(--text-tertiary);
         }
 
         .nav-btn:hover {
-            transform: translateX(5px);
-            background: var(--bg-secondary);
-            border-color: var(--primary);
+            background: var(--hover-bg);
+            color: var(--text-primary);
+        }
+
+        .nav-btn:hover i {
+            color: var(--primary);
         }
 
         .nav-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-color: var(--accent);
+            background: var(--bg-tertiary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-btn.active i {
+            color: var(--primary);
         }
 
         .user-section {
             position: absolute;
             bottom: 2rem;
-            left: 1.5rem;
-            right: 1.5rem;
+            left: 1rem;
+            right: 1rem;
         }
 
         .auth-button {
             width: 100%;
-            padding: 1.2rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 0.875rem;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 15px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 0.9375rem;
+            font-weight: 500;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
-            border: 2px solid var(--accent);
+            gap: 0.5rem;
+            transition: background 0.2s;
         }
 
         .auth-button:hover {
-            transform: scale(1.02);
+            background: var(--primary-dark);
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 0.8rem;
-            background: var(--bg-primary);
-            border-radius: 20px;
-            border: 2px solid var(--primary);
+            gap: 0.875rem;
+            padding: 0.875rem;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
         }
 
         .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            border: 3px solid var(--accent);
+            font-weight: 600;
+            font-size: 1rem;
         }
 
         .user-details {
             flex: 1;
+            overflow: hidden;
         }
 
         .user-name {
             font-weight: 600;
             color: var(--text-primary);
-            font-size: 1rem;
+            font-size: 0.9375rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-email {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-top: 0.125rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .logout-btn {
             color: var(--danger);
             cursor: pointer;
-            font-size: 0.9rem;
-            margin-top: 0.3rem;
+            font-size: 0.875rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .logout-btn:hover {
+            opacity: 1;
         }
 
         /* Main Content */
@@ -321,12 +319,12 @@
 
         .tab-content.active {
             display: block;
-            animation: slideIn 0.3s ease-out;
+            animation: fadeIn 0.2s ease-out;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Dashboard Header */
@@ -335,158 +333,121 @@
         }
 
         .dashboard-header h2 {
-            margin-bottom: 1.5rem;
+            font-size: 1.875rem;
+            font-weight: 600;
             color: var(--text-primary);
-            font-size: 2rem;
-            position: relative;
-            display: inline-block;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
         }
 
-        .dashboard-header h2:after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-            border-radius: 2px;
-        }
-
-        .search-sort {
+        .filters-bar {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
             align-items: center;
             background: var(--bg-secondary);
-            padding: 1.5rem;
-            border-radius: 20px;
-            border: 2px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
         }
 
-        .search-box {
+        .search-wrapper {
             flex: 2;
-            min-width: 250px;
+            min-width: 300px;
             position: relative;
         }
 
-        .search-box i {
+        .search-wrapper i {
             position: absolute;
-            left: 1.2rem;
+            left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
-            border: 2px solid var(--border);
-            border-radius: 40px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            color: var(--text-tertiary);
             font-size: 1rem;
         }
 
-        .search-box input:focus {
-            border-color: var(--primary);
+        .search-wrapper input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.75rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            transition: border-color 0.2s;
+        }
+
+        .search-wrapper input:focus {
             outline: none;
+            border-color: var(--primary);
         }
 
         .filter-group {
             display: flex;
-            gap: 0.8rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
             flex: 3;
         }
 
         .filter-group select {
             flex: 1;
-            min-width: 150px;
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 40px;
+            min-width: 140px;
+            padding: 0.875rem 2rem 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             background: var(--bg-primary);
             color: var(--text-primary);
+            font-size: 0.9375rem;
             cursor: pointer;
-            font-size: 1rem;
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
         }
 
         .filter-group select:focus {
-            border-color: var(--primary);
             outline: none;
+            border-color: var(--primary);
         }
 
         /* Projects Grid */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.8rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
         .project-card {
             background: var(--card-bg);
-            border: 3px solid var(--border);
-            border-radius: 25px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
             padding: 1.5rem;
-            transition: all 0.3s;
+            transition: all 0.2s;
             cursor: pointer;
             position: relative;
-            box-shadow: 0 8px 0 var(--shadow);
         }
 
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 0 var(--shadow);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px var(--shadow-lg);
             border-color: var(--primary);
         }
 
-        .favorite-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            color: var(--danger);
-            cursor: pointer;
-            font-size: 1.5rem;
-            z-index: 2;
-            background: var(--bg-secondary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--border);
-        }
-
-        .favorite-btn.active {
-            color: var(--danger);
-            animation: heartBeat 0.3s;
-        }
-
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
         .project-card h3 {
-            margin-bottom: 0.8rem;
-            color: var(--primary);
-            font-size: 1.3rem;
-            padding-right: 3rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            padding-right: 2.5rem;
         }
 
         .project-description {
             color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
@@ -498,104 +459,142 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            background: var(--bg-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
         }
 
         .project-author {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.375rem;
+        }
+
+        .project-author i {
+            color: var(--primary);
         }
 
         .project-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .tag {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            border: 2px solid var(--primary);
-            font-weight: 600;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
         }
 
         .custom-tag {
-            background: linear-gradient(135deg, var(--accent), var(--warning));
+            background: var(--primary);
             color: white;
+            border: none;
         }
 
         .project-stats {
             display: flex;
-            gap: 1.5rem;
-            color: var(--text-secondary);
-            font-size: 1rem;
+            gap: 1.25rem;
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        .project-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
         }
 
         .project-stats i {
-            margin-right: 0.3rem;
             color: var(--primary);
         }
 
-        .delete-btn {
-            color: white;
+        .favorite-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: var(--danger);
             cursor: pointer;
-            background: var(--danger);
+            font-size: 1.25rem;
+            z-index: 2;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .favorite-btn:hover {
+            opacity: 1;
+        }
+
+        .favorite-btn.active {
+            opacity: 1;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 2;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            background: var(--bg-tertiary);
             padding: 0.5rem;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
         }
 
         /* Form Styles */
-        .project-form {
-            max-width: 800px;
+        .form-container {
+            max-width: 700px;
             margin: 0 auto;
+        }
+
+        .form-card {
             background: var(--bg-secondary);
-            padding: 2.5rem;
-            border-radius: 30px;
-            border: 3px solid var(--border);
-            box-shadow: 0 10px 0 var(--shadow);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
         }
 
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.5rem;
             color: var(--text-primary);
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 500;
+            font-size: 0.9375rem;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 15px;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             background: var(--bg-primary);
             color: var(--text-primary);
-            font-size: 1rem;
+            font-size: 0.9375rem;
+            transition: border-color 0.2s;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
-            border-color: var(--primary);
             outline: none;
+            border-color: var(--primary);
         }
 
         .form-group textarea {
@@ -606,30 +605,31 @@
         .tags-selector {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-top: 1rem;
+            gap: 0.625rem;
+            margin: 0.75rem 0;
         }
 
         .tag-option {
-            padding: 0.6rem 1.2rem;
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 40px;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
         }
 
         .tag-option.selected {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--primary);
             color: white;
-            border-color: var(--accent);
+            border-color: var(--primary);
         }
 
         .custom-tag-input {
             display: flex;
             gap: 0.5rem;
-            margin-top: 1rem;
+            margin-top: 0.75rem;
         }
 
         .custom-tag-input input {
@@ -637,58 +637,78 @@
         }
 
         .custom-tag-input button {
-            padding: 0 1.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            border-radius: 15px;
+            padding: 0.875rem 1.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .custom-tag-input button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
         .submit-btn {
             width: 100%;
-            padding: 1.2rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1rem;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 40px;
-            font-size: 1.2rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
-            border: 2px solid var(--accent);
+            gap: 0.5rem;
+            transition: background 0.2s;
+            margin-top: 1rem;
         }
 
         .submit-btn:hover {
-            transform: scale(1.02);
+            background: var(--primary-dark);
         }
 
-        /* Profile Tab */
+        /* Profile Styles */
         .profile-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
             display: flex;
             align-items: center;
             gap: 2rem;
-            background: var(--bg-secondary);
-            padding: 2rem;
-            border-radius: 30px;
-            border: 3px solid var(--border);
-            margin-bottom: 2rem;
         }
 
         .profile-avatar-large {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 3rem;
-            border: 4px solid var(--accent);
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-info p {
+            color: var(--text-tertiary);
+            font-size: 0.9375rem;
         }
 
         .profile-stats {
@@ -703,29 +723,43 @@
 
         .profile-stat .number {
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 600;
             color: var(--primary);
+        }
+
+        .profile-stat .label {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
         }
 
         .profile-tabs {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
         }
 
         .profile-tab {
-            padding: 0.8rem 2rem;
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 40px;
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            font-weight: 500;
             cursor: pointer;
-            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .profile-tab:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
         }
 
         .profile-tab.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-color: var(--accent);
+            background: var(--bg-tertiary);
+            color: var(--primary);
+            font-weight: 600;
         }
 
         .profile-grid {
@@ -742,43 +776,288 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
             overflow-y: auto;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(4px);
         }
 
         .modal-content {
             background: var(--bg-secondary);
-            margin: 5% auto;
-            padding: 2.5rem;
+            margin: 3rem auto;
+            padding: 2rem;
             width: 90%;
             max-width: 800px;
-            border-radius: 30px;
+            border-radius: 24px;
             position: relative;
-            border: 3px solid var(--primary);
-            box-shadow: 0 15px 0 var(--shadow);
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px var(--shadow-lg);
         }
 
-        .close, .close-auth {
+        .modal-close {
             position: absolute;
             right: 1.5rem;
-            top: 1rem;
-            font-size: 2rem;
+            top: 1.5rem;
+            font-size: 1.25rem;
             cursor: pointer;
-            color: var(--text-secondary);
-            width: 40px;
-            height: 40px;
+            color: var(--text-tertiary);
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--bg-primary);
-            border-radius: 50%;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            transition: all 0.2s;
         }
 
-        .close:hover, .close-auth:hover {
+        .modal-close:hover {
             background: var(--danger);
             color: white;
+        }
+
+        /* Project Modal Content */
+        .project-header {
+            margin-bottom: 2rem;
+        }
+
+        .project-header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            padding-right: 3rem;
+        }
+
+        .project-header-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--text-tertiary);
+            font-size: 0.9375rem;
+        }
+
+        .project-header-meta i {
+            color: var(--primary);
+            margin-right: 0.375rem;
+        }
+
+        .project-description-full {
+            background: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .project-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            margin: 1rem 0;
+            transition: background 0.2s;
+        }
+
+        .project-link-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .project-actions-modal {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .vote-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .vote-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .vote-btn i {
+            font-size: 1rem;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+        }
+
+        .comments-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .comment {
+            background: var(--bg-tertiary);
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .comment-date {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .comment-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .comment-votes {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comment-vote-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .comment-vote-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--primary);
+        }
+
+        .reply-btn {
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 0.875rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .reply-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--primary);
+        }
+
+        .delete-comment-btn {
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 0.875rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .delete-comment-btn:hover {
+            background: var(--bg-secondary);
+        }
+
+        .replies {
+            margin-left: 2rem;
+            margin-top: 1rem;
+        }
+
+        .reply-form {
+            margin-top: 1rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--border);
+        }
+
+        .reply-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 0.9375rem;
+        }
+
+        .reply-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .reply-submit {
+            padding: 0.625rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .reply-submit:hover {
+            background: var(--primary-dark);
+        }
+
+        .add-comment {
+            margin: 1.5rem 0;
+        }
+
+        .add-comment textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 0.9375rem;
+        }
+
+        .add-comment textarea:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         /* Auth Modal */
@@ -788,32 +1067,36 @@
 
         .auth-tabs {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
             margin-bottom: 2rem;
+            background: var(--bg-tertiary);
+            padding: 0.5rem;
+            border-radius: 12px;
         }
 
         .auth-tab {
             flex: 1;
-            padding: 1rem;
+            padding: 0.75rem;
             border: none;
-            background: var(--bg-primary);
+            background: transparent;
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 1.1rem;
-            border-radius: 40px;
-            border: 2px solid var(--border);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
         }
 
         .auth-tab.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-color: var(--accent);
+            background: var(--bg-secondary);
+            color: var(--primary);
+            box-shadow: 0 2px 8px var(--shadow);
         }
 
         .auth-form {
             display: none;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 1rem;
         }
 
         .auth-form.active {
@@ -821,46 +1104,54 @@
         }
 
         .auth-form input {
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 15px;
-            background: var(--bg-primary);
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-tertiary);
             color: var(--text-primary);
+            font-size: 0.9375rem;
         }
 
         .auth-form input:focus {
-            border-color: var(--primary);
             outline: none;
+            border-color: var(--primary);
         }
 
         .auth-btn {
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 0.875rem;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 40px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 0.9375rem;
             font-weight: 600;
             cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .auth-btn:hover {
+            background: var(--primary-dark);
         }
 
         .google-btn {
-            padding: 1rem;
-            background: var(--bg-primary);
+            padding: 0.875rem;
+            background: transparent;
             color: var(--text-primary);
-            border: 2px solid var(--border);
-            border-radius: 40px;
-            margin-top: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-top: 0.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
             width: 100%;
-            font-weight: 600;
         }
 
         .google-btn:hover {
+            background: var(--bg-tertiary);
             border-color: var(--primary);
         }
 
@@ -868,20 +1159,79 @@
         .loading {
             text-align: center;
             padding: 3rem;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
+            color: var(--text-tertiary);
+            font-size: 0.9375rem;
         }
 
         .loading i {
-            font-size: 2rem;
             color: var(--primary);
-            animation: spin 1s linear infinite;
-            margin-right: 1rem;
+            margin-right: 0.5rem;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px var(--shadow-lg);
+            border-left: 4px solid;
+            z-index: 2000;
+            animation: slideIn 0.2s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+        }
+        
+        .notification.success { border-left-color: var(--success); }
+        .notification.error { border-left-color: var(--danger); }
+        .notification.warning { border-left-color: var(--warning); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state button {
+            padding: 0.875rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .empty-state button:hover {
+            background: var(--primary-dark);
         }
 
         /* Responsive */
@@ -891,12 +1241,11 @@
                 height: auto;
                 position: relative;
                 padding: 1rem;
-                border-radius: 0;
             }
             
             .main-content {
                 margin-left: 0;
-                padding: 1rem;
+                padding: 1.5rem;
             }
             
             .app-container {
@@ -905,20 +1254,24 @@
             
             .user-section {
                 position: static;
-                margin-top: 1rem;
+                margin-top: 1.5rem;
             }
             
-            .search-sort {
+            .filters-bar {
                 flex-direction: column;
             }
             
-            .filter-group {
+            .search-wrapper {
                 width: 100%;
             }
             
             .profile-header {
                 flex-direction: column;
                 text-align: center;
+            }
+            
+            .project-header h2 {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -927,18 +1280,17 @@
     <div class="app-container">
         <!-- Sidebar -->
         <nav class="sidebar">
-            <div class="logo">
-                <i class="fas fa-crown"></i>
-                <h1>CodeCove</h1>
+            <div class="sidebar-header">
+                <h1>Stack Index</h1>
+                <p>Professional project hub</p>
             </div>
             
             <div class="theme-toggle">
-                <i class="fas fa-sun"></i>
+                <span>Dark mode</span>
                 <label class="switch">
                     <input type="checkbox" id="themeSwitch">
-                    <span class="slider round"></span>
+                    <span class="slider"></span>
                 </label>
-                <i class="fas fa-moon"></i>
             </div>
 
             <div class="nav-links">
@@ -946,20 +1298,20 @@
                     <i class="fas fa-compass"></i> Discover
                 </button>
                 <button class="nav-btn" data-tab="create">
-                    <i class="fas fa-plus-circle"></i> Share Project
+                    <i class="fas fa-plus-circle"></i> New Project
                 </button>
                 <button class="nav-btn" data-tab="profile">
-                    <i class="fas fa-user-astronaut"></i> My Profile
+                    <i class="fas fa-user"></i> Profile
                 </button>
                 <button class="nav-btn" data-tab="about">
-                    <i class="fas fa-rocket"></i> About
+                    <i class="fas fa-info-circle"></i> About
                 </button>
             </div>
 
             <div class="user-section">
                 <div id="authContainer">
                     <button class="auth-button" onclick="showAuthModal()">
-                        <i class="fas fa-sign-in-alt"></i> Sign In / Sign Up
+                        <i class="fas fa-sign-in-alt"></i> Sign In
                     </button>
                 </div>
             </div>
@@ -970,103 +1322,104 @@
             <!-- Dashboard Tab -->
             <div id="dashboard" class="tab-content active">
                 <div class="dashboard-header">
-                    <h2><i class="fas fa-compass"></i> Discover Amazing Projects</h2>
-                    <div class="search-sort">
-                        <div class="search-box">
+                    <h2>Discover Projects</h2>
+                    <div class="filters-bar">
+                        <div class="search-wrapper">
                             <i class="fas fa-search"></i>
                             <input type="text" id="searchInput" placeholder="Search projects...">
                         </div>
                         <div class="filter-group">
                             <select id="sortSelect">
-                                <option value="newest">✨ Newest First</option>
-                                <option value="oldest">📅 Oldest First</option>
-                                <option value="mostUpvoted">🔥 Most Upvoted</option>
-                                <option value="mostDownvoted">💧 Most Downvoted</option>
-                                <option value="mostFavorited">⭐ Most Favorited</option>
+                                <option value="newest">Newest</option>
+                                <option value="oldest">Oldest</option>
+                                <option value="mostUpvoted">Most Upvoted</option>
+                                <option value="mostFavorited">Most Favorited</option>
                             </select>
                             <select id="categoryFilter">
-                                <option value="all">🎮 All Categories</option>
-                                <option value="Game">🎮 Game</option>
-                                <option value="Tool">🔧 Tool</option>
-                                <option value="Website">🌐 Website</option>
-                                <option value="Mobile App">📱 Mobile App</option>
-                                <option value="AI/ML">🤖 AI/ML</option>
-                                <option value="Utility">⚡ Utility</option>
-                                <option value="Creative">🎨 Creative</option>
-                                <option value="Other">✨ Other</option>
+                                <option value="all">All Categories</option>
+                                <option value="Game">Game</option>
+                                <option value="Tool">Tool</option>
+                                <option value="Website">Website</option>
+                                <option value="Mobile App">Mobile App</option>
+                                <option value="AI/ML">AI/ML</option>
+                                <option value="Utility">Utility</option>
+                                <option value="Creative">Creative</option>
+                                <option value="Other">Other</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 
                 <div class="projects-grid" id="projectsGrid">
-                    <div class="loading"><i class="fas fa-spinner"></i> Loading projects...</div>
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading projects...</div>
                 </div>
             </div>
 
             <!-- Create Tab -->
             <div id="create" class="tab-content">
-                <h2><i class="fas fa-plus-circle"></i> Share Your Creation</h2>
-                <form id="projectForm" class="project-form">
-                    <div class="form-group">
-                        <label>🎮 Project Name *</label>
-                        <input type="text" id="projectName" required maxlength="100" placeholder="My Awesome Project">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>📝 Description *</label>
-                        <textarea id="projectDescription" required maxlength="1000" placeholder="Tell us about your project..."></textarea>
-                        <small><span id="descCount">0</span>/1000</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>🔗 Project URL/Link *</label>
-                        <input type="url" id="projectLink" required placeholder="https://myproject.com">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>🏷️ Tags (Select up to 5, or add custom)</label>
-                        <div class="tags-selector" id="tagsSelector"></div>
-                        <div class="custom-tag-input">
-                            <input type="text" id="customTag" placeholder="Add custom tag...">
-                            <button type="button" onclick="addCustomTag()">Add</button>
+                <div class="form-container">
+                    <h2 style="font-size: 1.875rem; font-weight: 600; margin-bottom: 1.5rem;">Share Your Project</h2>
+                    <form id="projectForm" class="form-card">
+                        <div class="form-group">
+                            <label>Project Name *</label>
+                            <input type="text" id="projectName" required maxlength="100" placeholder="e.g., My Awesome Project">
                         </div>
-                        <small id="tagCount">0/5 selected</small>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-rocket"></i> Launch Project
-                    </button>
-                </form>
+                        
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea id="projectDescription" required maxlength="1000" placeholder="Describe your project, what it does, technologies used..."></textarea>
+                            <small style="color: var(--text-tertiary);"><span id="descCount">0</span>/1000</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Project URL *</label>
+                            <input type="url" id="projectLink" required placeholder="https://...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Tags (Select up to 5, or add custom)</label>
+                            <div class="tags-selector" id="tagsSelector"></div>
+                            <div class="custom-tag-input">
+                                <input type="text" id="customTag" placeholder="Add custom tag...">
+                                <button type="button" onclick="addCustomTag()">Add Tag</button>
+                            </div>
+                            <small style="color: var(--text-tertiary);" id="tagCount">0/5 selected</small>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-cloud-upload-alt"></i> Publish Project
+                        </button>
+                    </form>
+                </div>
             </div>
 
             <!-- Profile Tab -->
             <div id="profile" class="tab-content">
                 <div id="profileContent">
-                    <div class="loading"><i class="fas fa-spinner"></i> Loading profile...</div>
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading profile...</div>
                 </div>
             </div>
 
             <!-- About Tab -->
             <div id="about" class="tab-content">
-                <h2><i class="fas fa-rocket"></i> About CodeCove</h2>
-                <div class="about-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                    <div class="about-card" style="background: var(--bg-secondary); padding: 2rem; border-radius: 30px; border: 3px solid var(--border); text-align: center;">
-                        <i class="fas fa-heart" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                        <h3>Our Mission</h3>
-                        <p>CodeCove is a vibrant community for developers who "vibe code" – creating amazing projects through intuition and joy. Share your creations, discover inspiration, and connect with fellow makers.</p>
+                <h2 style="font-size: 1.875rem; font-weight: 600; margin-bottom: 1.5rem;">About Stack Index</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div class="form-card" style="padding: 2rem;">
+                        <i class="fas fa-bullseye" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem;">Our Mission</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">Stack Index provides a professional platform for developers to showcase their work, discover innovative projects, and connect with the global developer community.</p>
                     </div>
                     
-                    <div class="about-card" style="background: var(--bg-secondary); padding: 2rem; border-radius: 30px; border: 3px solid var(--border); text-align: center;">
-                        <i class="fas fa-code" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                        <h3>How It Works</h3>
-                        <p>Share your project with a description, link, and up to 5 tags. Upvote projects you love, favorite them, comment with feedback, and build your portfolio in a supportive environment.</p>
+                    <div class="form-card" style="padding: 2rem;">
+                        <i class="fas fa-code-branch" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem;">How It Works</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">Share your projects with detailed descriptions, links, and tags. Engage with the community through upvotes, comments, and favorites. Build your professional portfolio.</p>
                     </div>
                     
-                    <div class="about-card" style="background: var(--bg-secondary); padding: 2rem; border-radius: 30px; border: 3px solid var(--border); text-align: center;">
-                        <i class="fas fa-users" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                        <h3>Community Guidelines</h3>
-                        <p>Be kind, give constructive feedback, respect others' work, and have fun! Projects of all skill levels are welcome – we're all here to grow together.</p>
+                    <div class="form-card" style="padding: 2rem;">
+                        <i class="fas fa-handshake" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem;">Community</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">Join a community of passionate developers. Provide constructive feedback, get inspiration, and grow together. All skill levels are welcome.</p>
                     </div>
                 </div>
             </div>
@@ -1075,31 +1428,33 @@
         <!-- Project Modal -->
         <div id="projectModal" class="modal">
             <div class="modal-content">
-                <span class="close">&times;</span>
-                <div id="modalProjectContent"></div>
+                <span class="modal-close">&times;</span>
+                <div id="modalProjectContent">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading project...</div>
+                </div>
             </div>
         </div>
 
         <!-- Auth Modal -->
         <div id="authModal" class="modal">
             <div class="modal-content auth-modal">
-                <span class="close-auth">&times;</span>
+                <span class="modal-close close-auth">&times;</span>
                 <div class="auth-tabs">
-                    <button class="auth-tab active" data-auth="login">Login</button>
-                    <button class="auth-tab" data-auth="signup">Sign Up</button>
+                    <button class="auth-tab active" data-auth="login">Sign In</button>
+                    <button class="auth-tab" data-auth="signup">Create Account</button>
                 </div>
                 
                 <form id="loginForm" class="auth-form active">
-                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="email" id="loginEmail" placeholder="Email address" required>
                     <input type="password" id="loginPassword" placeholder="Password" required>
-                    <button type="submit" class="auth-btn">Login</button>
+                    <button type="submit" class="auth-btn">Sign In</button>
                 </form>
                 
                 <form id="signupForm" class="auth-form">
-                    <input type="text" id="signupName" placeholder="Display Name" required>
-                    <input type="email" id="signupEmail" placeholder="Email" required>
-                    <input type="password" id="signupPassword" placeholder="Password (min 6 chars)" required>
-                    <button type="submit" class="auth-btn">Sign Up</button>
+                    <input type="text" id="signupName" placeholder="Full name" required>
+                    <input type="email" id="signupEmail" placeholder="Email address" required>
+                    <input type="password" id="signupPassword" placeholder="Password (min 6 characters)" required>
+                    <button type="submit" class="auth-btn">Create Account</button>
                 </form>
                 
                 <button id="googleAuth" class="google-btn">
@@ -1128,9 +1483,7 @@
         // Enable offline persistence
         db.enablePersistence().catch(err => {
             if (err.code === 'failed-precondition') {
-                console.log('Multiple tabs open, persistence enabled in first tab only');
-            } else if (err.code === 'unimplemented') {
-                console.log('Browser doesn\'t support persistence');
+                console.log('Multiple tabs open');
             }
         });
 
@@ -1141,13 +1494,16 @@
         let currentUser = null;
         let currentProjectId = null;
         let selectedTags = new Set();
+        let projectsUnsubscribe = null;
 
         // ==================== AUTH FUNCTIONS ====================
         auth.onAuthStateChanged(user => {
             currentUser = user;
             updateAuthUI();
+            if (projectsUnsubscribe) {
+                projectsUnsubscribe();
+            }
             loadProjects();
-            if (user) loadProfile();
         });
 
         function updateAuthUI() {
@@ -1156,22 +1512,24 @@
             if (currentUser) {
                 const displayName = currentUser.displayName || currentUser.email.split('@')[0] || 'User';
                 const initial = displayName.charAt(0).toUpperCase();
+                const email = currentUser.email || '';
                 
                 authContainer.innerHTML = `
                     <div class="user-info">
                         <div class="user-avatar">${initial}</div>
                         <div class="user-details">
                             <div class="user-name">${escapeHtml(displayName)}</div>
-                            <div class="logout-btn" onclick="logout()">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </div>
+                            <div class="user-email">${escapeHtml(email)}</div>
+                        </div>
+                        <div class="logout-btn" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
                         </div>
                     </div>
                 `;
             } else {
                 authContainer.innerHTML = `
                     <button class="auth-button" onclick="showAuthModal()">
-                        <i class="fas fa-sign-in-alt"></i> Sign In / Sign Up
+                        <i class="fas fa-sign-in-alt"></i> Sign In
                     </button>
                 `;
             }
@@ -1191,7 +1549,7 @@
             try {
                 await auth.signInWithEmailAndPassword(email, password);
                 hideAuthModal();
-                showNotification('Successfully logged in!', 'success');
+                showNotification('Signed in successfully', 'success');
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -1202,7 +1560,7 @@
                 const result = await auth.createUserWithEmailAndPassword(email, password);
                 await result.user.updateProfile({ displayName: name });
                 hideAuthModal();
-                showNotification('Account created successfully!', 'success');
+                showNotification('Account created successfully', 'success');
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -1213,7 +1571,7 @@
                 const provider = new firebase.auth.GoogleAuthProvider();
                 await auth.signInWithPopup(provider);
                 hideAuthModal();
-                showNotification('Successfully logged in with Google!', 'success');
+                showNotification('Signed in with Google', 'success');
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -1222,7 +1580,7 @@
         window.logout = async function() {
             try {
                 await auth.signOut();
-                showNotification('Logged out successfully', 'success');
+                showNotification('Signed out', 'success');
                 document.querySelector('[data-tab="dashboard"]').click();
             } catch (error) {
                 showNotification(error.message, 'error');
@@ -1259,8 +1617,13 @@
                     const tabId = btn.dataset.tab;
                     document.getElementById(tabId).classList.add('active');
                     
-                    if (tabId === 'profile' && currentUser) {
-                        loadProfile();
+                    if (tabId === 'profile') {
+                        if (currentUser) {
+                            loadProfile();
+                        } else {
+                            showAuthModal();
+                            document.querySelector('[data-tab="dashboard"]').click();
+                        }
                     }
                 });
             });
@@ -1285,16 +1648,15 @@
             if (!tag) return;
             
             if (selectedTags.size >= 5) {
-                showNotification('You can only select up to 5 tags', 'warning');
+                showNotification('Maximum 5 tags allowed', 'warning');
                 return;
             }
             
             selectedTags.add(tag);
             document.getElementById('tagCount').textContent = `${selectedTags.size}/5 selected`;
             
-            // Add to tags selector as selected
             const tagElement = document.createElement('span');
-            tagElement.className = 'tag-option selected custom-tag';
+            tagElement.className = 'tag-option selected';
             tagElement.textContent = tag;
             tagElement.addEventListener('click', () => toggleTag(tag, tagElement));
             document.getElementById('tagsSelector').appendChild(tagElement);
@@ -1311,7 +1673,7 @@
                     selectedTags.add(tag);
                     element.classList.add('selected');
                 } else {
-                    showNotification('You can only select up to 5 tags', 'warning');
+                    showNotification('Maximum 5 tags allowed', 'warning');
                 }
             }
             document.getElementById('tagCount').textContent = `${selectedTags.size}/5 selected`;
@@ -1328,7 +1690,7 @@
                 e.preventDefault();
                 
                 if (!currentUser) {
-                    showNotification('Please login to share a project', 'warning');
+                    showNotification('Please sign in to share a project', 'warning');
                     showAuthModal();
                     return;
                 }
@@ -1349,7 +1711,7 @@
                 
                 try {
                     await db.collection('projects').add(projectData);
-                    showNotification('Project shared successfully!', 'success');
+                    showNotification('Project published successfully', 'success');
                     form.reset();
                     selectedTags.clear();
                     document.querySelectorAll('.tag-option').forEach(t => t.classList.remove('selected'));
@@ -1380,9 +1742,6 @@
                 case 'mostUpvoted':
                     query = query.orderBy('upvotes', 'desc');
                     break;
-                case 'mostDownvoted':
-                    query = query.orderBy('downvotes', 'desc');
-                    break;
                 case 'mostFavorited':
                     query = query.orderBy('favorites', 'desc');
                     break;
@@ -1390,13 +1749,16 @@
                     query = query.orderBy('createdAt', 'desc');
             }
             
-            query.onSnapshot(async (snapshot) => {
+            if (projectsUnsubscribe) {
+                projectsUnsubscribe();
+            }
+            
+            projectsUnsubscribe = query.onSnapshot(async (snapshot) => {
                 let projects = [];
                 snapshot.forEach(doc => {
                     projects.push({ id: doc.id, ...doc.data() });
                 });
                 
-                // Get user's favorites if logged in
                 let userFavorites = new Set();
                 if (currentUser) {
                     const favSnapshot = await db.collection('favorites')
@@ -1417,8 +1779,7 @@
                     projects = projects.filter(p => 
                         p.name?.toLowerCase().includes(searchTerm) ||
                         p.description?.toLowerCase().includes(searchTerm) ||
-                        p.userName?.toLowerCase().includes(searchTerm) ||
-                        (p.tags && p.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+                        p.userName?.toLowerCase().includes(searchTerm)
                     );
                 }
                 
@@ -1430,7 +1791,13 @@
             const projectsGrid = document.getElementById('projectsGrid');
             
             if (projects.length === 0) {
-                projectsGrid.innerHTML = '<div class="loading">No projects found. Be the first to share one!</div>';
+                projectsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <p>No projects found</p>
+                        <button onclick="document.querySelector('[data-tab=\"create\"]').click()">Create your first project</button>
+                    </div>
+                `;
                 return;
             }
             
@@ -1444,11 +1811,11 @@
                             <i class="fas fa-heart"></i>
                         </div>
                     ` : ''}
-                    <div class="project-actions" style="position: absolute; top: 1rem; left: 1rem;">
-                        ${currentUser && project.userId === currentUser.uid ? 
-                            `<i class="fas fa-trash delete-btn" onclick="deleteProject('${project.id}', event)"></i>` : 
-                            ''}
-                    </div>
+                    ${currentUser && project.userId === currentUser.uid ? 
+                        `<div class="delete-btn" onclick="deleteProject('${project.id}', event)">
+                            <i class="fas fa-trash"></i>
+                        </div>` : 
+                        ''}
                     <h3>${escapeHtml(project.name)}</h3>
                     <p class="project-description">${escapeHtml(project.description?.substring(0, 150))}${project.description?.length > 150 ? '...' : ''}</p>
                     <div class="project-meta">
@@ -1458,11 +1825,10 @@
                         <span>${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                     </div>
                     <div class="project-tags">
-                        ${project.tags ? project.tags.map(tag => `<span class="tag ${!AVAILABLE_TAGS.includes(tag) ? 'custom-tag' : ''}">${tag}</span>`).join('') : ''}
+                        ${project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
                     </div>
                     <div class="project-stats">
                         <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
-                        <span><i class="fas fa-arrow-down"></i> ${project.downvotes || 0}</span>
                         <span><i class="fas fa-heart"></i> ${project.favorites || 0}</span>
                         <span><i class="fas fa-comment"></i> ${project.comments || 0}</span>
                     </div>
@@ -1475,7 +1841,7 @@
             event.stopPropagation();
             
             if (!currentUser) {
-                showNotification('Please login to favorite', 'warning');
+                showNotification('Please sign in to favorite', 'warning');
                 showAuthModal();
                 return;
             }
@@ -1490,7 +1856,6 @@
                     await projectRef.update({
                         favorites: firebase.firestore.FieldValue.increment(-1)
                     });
-                    showNotification('Removed from favorites', 'success');
                 } else {
                     await favoriteRef.set({
                         userId: currentUser.uid,
@@ -1500,7 +1865,6 @@
                     await projectRef.update({
                         favorites: firebase.firestore.FieldValue.increment(1)
                     });
-                    showNotification('Added to favorites! ⭐', 'success');
                 }
             } catch (error) {
                 showNotification(error.message, 'error');
@@ -1509,16 +1873,11 @@
 
         // ==================== PROFILE FUNCTIONS ====================
         async function loadProfile() {
-            if (!currentUser) {
-                document.querySelector('[data-tab="dashboard"]').click();
-                showNotification('Please login to view profile', 'warning');
-                return;
-            }
+            if (!currentUser) return;
             
             const profileContent = document.getElementById('profileContent');
             
             try {
-                // Get user's projects
                 const projectsSnapshot = await db.collection('projects')
                     .where('userId', '==', currentUser.uid)
                     .orderBy('createdAt', 'desc')
@@ -1529,7 +1888,6 @@
                     userProjects.push({ id: doc.id, ...doc.data() });
                 });
                 
-                // Get user's favorites
                 const favoritesSnapshot = await db.collection('favorites')
                     .where('userId', '==', currentUser.uid)
                     .get();
@@ -1556,17 +1914,17 @@
             profileContent.innerHTML = `
                 <div class="profile-header">
                     <div class="profile-avatar-large">${initial}</div>
-                    <div>
+                    <div class="profile-info">
                         <h2>${escapeHtml(displayName)}</h2>
-                        <p>${currentUser.email}</p>
+                        <p>${escapeHtml(currentUser.email)}</p>
                         <div class="profile-stats">
                             <div class="profile-stat">
                                 <div class="number">${userProjects.length}</div>
-                                <div>Projects</div>
+                                <div class="label">Projects</div>
                             </div>
                             <div class="profile-stat">
                                 <div class="number">${favoriteProjects.length}</div>
-                                <div>Favorites</div>
+                                <div class="label">Favorites</div>
                             </div>
                         </div>
                     </div>
@@ -1574,12 +1932,12 @@
                 
                 <div class="profile-tabs">
                     <button class="profile-tab active" onclick="showProfileTab('projects')">My Projects</button>
-                    <button class="profile-tab" onclick="showProfileTab('favorites')">Favorites ⭐</button>
+                    <button class="profile-tab" onclick="showProfileTab('favorites')">Favorites</button>
                 </div>
                 
                 <div id="profileProjects" class="profile-grid">
                     ${userProjects.length === 0 ? 
-                        '<p>No projects yet. Share your first project!</p>' : 
+                        '<div class="empty-state"><i class="fas fa-code"></i><p>No projects yet</p><button onclick="document.querySelector(\'[data-tab=\"create\"]\').click()">Create your first project</button></div>' : 
                         userProjects.map(project => `
                             <div class="project-card" onclick="openProjectModal('${project.id}')">
                                 <h3>${escapeHtml(project.name)}</h3>
@@ -1595,7 +1953,7 @@
                 
                 <div id="profileFavorites" class="profile-grid" style="display: none;">
                     ${favoriteProjects.length === 0 ? 
-                        '<p>No favorites yet. Star some projects!</p>' : 
+                        '<div class="empty-state"><i class="fas fa-heart"></i><p>No favorites yet</p></div>' : 
                         favoriteProjects.map(project => `
                             <div class="project-card" onclick="openProjectModal('${project.id}')">
                                 <h3>${escapeHtml(project.name)}</h3>
@@ -1630,7 +1988,6 @@
             const modal = document.getElementById('projectModal');
             const content = document.getElementById('modalProjectContent');
             
-            content.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Loading project...</div>';
             modal.style.display = 'block';
             
             try {
@@ -1652,6 +2009,7 @@
                 displayProjectModal(project, comments);
             } catch (error) {
                 showNotification(error.message, 'error');
+                modal.style.display = 'none';
             }
         };
 
@@ -1659,29 +2017,31 @@
             const content = document.getElementById('modalProjectContent');
             
             content.innerHTML = `
-                <h2>${escapeHtml(project.name)}</h2>
-                <div class="project-meta" style="justify-content: flex-start; gap: 2rem;">
-                    <span><i class="fas fa-user"></i> ${escapeHtml(project.userName)}</span>
-                    <span><i class="fas fa-calendar"></i> ${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
+                <div class="project-header">
+                    <h2>${escapeHtml(project.name)}</h2>
+                    <div class="project-header-meta">
+                        <span><i class="fas fa-user"></i> ${escapeHtml(project.userName)}</span>
+                        <span><i class="fas fa-calendar"></i> ${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
+                    </div>
                 </div>
                 
-                <p style="margin: 1.5rem 0; line-height: 1.6;">${escapeHtml(project.description)}</p>
-                
-                <div class="project-link" style="margin: 1rem 0;">
-                    <a href="${escapeHtml(project.link)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.8rem 2rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; border-radius: 40px; font-weight: 600;">
-                        <i class="fas fa-external-link-alt"></i> View Project
-                    </a>
+                <div class="project-description-full">
+                    ${escapeHtml(project.description)}
                 </div>
                 
-                <div class="project-tags" style="margin: 1rem 0;">
-                    ${project.tags ? project.tags.map(tag => `<span class="tag ${!AVAILABLE_TAGS.includes(tag) ? 'custom-tag' : ''}">${tag}</span>`).join('') : ''}
+                <a href="${escapeHtml(project.link)}" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                    <i class="fas fa-external-link-alt"></i> View Project
+                </a>
+                
+                <div class="project-tags" style="margin: 1.5rem 0;">
+                    ${project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
                 </div>
                 
-                <div class="project-voting" style="display: flex; gap: 1rem; margin: 1.5rem 0;">
-                    <button class="vote-btn" onclick="vote('${project.id}', 'up')" style="padding: 0.8rem 2rem; background: var(--bg-primary); border: 2px solid var(--border); border-radius: 40px; cursor: pointer;">
+                <div class="project-actions-modal">
+                    <button class="vote-btn" onclick="vote('${project.id}', 'up')">
                         <i class="fas fa-arrow-up"></i> Upvote (${project.upvotes || 0})
                     </button>
-                    <button class="vote-btn" onclick="vote('${project.id}', 'down')" style="padding: 0.8rem 2rem; background: var(--bg-primary); border: 2px solid var(--border); border-radius: 40px; cursor: pointer;">
+                    <button class="vote-btn" onclick="vote('${project.id}', 'down')">
                         <i class="fas fa-arrow-down"></i> Downvote (${project.downvotes || 0})
                     </button>
                 </div>
@@ -1690,12 +2050,14 @@
                     <h3>Comments (${comments.length})</h3>
                     
                     ${currentUser ? `
-                        <div class="add-comment" style="margin: 1rem 0;">
-                            <textarea id="newComment" placeholder="Share your thoughts..." rows="3" style="width: 100%; padding: 1rem; border: 2px solid var(--border); border-radius: 15px; background: var(--bg-primary); color: var(--text-primary); margin-bottom: 0.5rem;"></textarea>
-                            <button onclick="addComment('${project.id}')" class="submit-btn" style="padding: 0.8rem;">Post Comment</button>
+                        <div class="add-comment">
+                            <textarea id="newComment" placeholder="Add a comment..." rows="3"></textarea>
+                            <button onclick="addComment('${project.id}')" class="submit-btn" style="width: auto; padding: 0.75rem 2rem;">Post Comment</button>
                         </div>
                     ` : `
-                        <p style="margin: 1rem 0;"><a href="#" onclick="showAuthModal(); return false;">Login</a> to comment</p>
+                        <p style="color: var(--text-tertiary); margin: 1rem 0;">
+                            <a href="#" onclick="showAuthModal(); return false;" style="color: var(--primary);">Sign in</a> to comment
+                        </p>
                     `}
                     
                     <div class="comments-list">
@@ -1711,38 +2073,38 @@
             if (filteredComments.length === 0) return '';
             
             return filteredComments.map(comment => `
-                <div class="comment" id="comment-${comment.id}" style="background: var(--bg-primary); border: 1px solid var(--border); border-radius: 15px; padding: 1rem; margin-bottom: 1rem;">
-                    <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                        <span class="comment-author" style="font-weight: bold; color: var(--primary);">${escapeHtml(comment.userName)}</span>
-                        <span class="comment-date" style="font-size: 0.8rem; color: var(--text-secondary);">${comment.createdAt ? new Date(comment.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
+                <div class="comment" id="comment-${comment.id}">
+                    <div class="comment-header">
+                        <span class="comment-author">${escapeHtml(comment.userName)}</span>
+                        <span class="comment-date">${comment.createdAt ? new Date(comment.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                     </div>
-                    <div class="comment-content" style="margin-bottom: 0.5rem;">${escapeHtml(comment.content)}</div>
-                    <div class="comment-actions" style="display: flex; gap: 1rem; align-items: center;">
-                        <div class="comment-votes" style="display: flex; align-items: center; gap: 0.3rem;">
-                            <button class="vote-btn" onclick="voteComment('${comment.id}', 'up')" style="background: none; border: none; color: var(--text-secondary); cursor: pointer;">
+                    <div class="comment-content">${escapeHtml(comment.content)}</div>
+                    <div class="comment-actions">
+                        <div class="comment-votes">
+                            <button class="comment-vote-btn" onclick="voteComment('${comment.id}', 'up')">
                                 <i class="fas fa-arrow-up"></i> ${comment.upvotes || 0}
                             </button>
-                            <button class="vote-btn" onclick="voteComment('${comment.id}', 'down')" style="background: none; border: none; color: var(--text-secondary); cursor: pointer;">
+                            <button class="comment-vote-btn" onclick="voteComment('${comment.id}', 'down')">
                                 <i class="fas fa-arrow-down"></i> ${comment.downvotes || 0}
                             </button>
                         </div>
                         ${currentUser ? `
-                            <span class="reply-btn" onclick="showReplyForm('${comment.id}')" style="color: var(--text-secondary); cursor: pointer; font-size: 0.9rem;">
+                            <span class="reply-btn" onclick="showReplyForm('${comment.id}')">
                                 <i class="fas fa-reply"></i> Reply
                             </span>
                         ` : ''}
                         ${currentUser && comment.userId === currentUser.uid ? `
-                            <span class="delete-btn" onclick="deleteComment('${comment.id}')" style="color: var(--danger); cursor: pointer;">
+                            <span class="delete-comment-btn" onclick="deleteComment('${comment.id}')">
                                 <i class="fas fa-trash"></i>
                             </span>
                         ` : ''}
                     </div>
-                    <div class="replies" id="replies-${comment.id}" style="margin-left: 2rem; margin-top: 1rem;">
+                    <div class="replies" id="replies-${comment.id}">
                         ${renderComments(comments, comment.id)}
                     </div>
-                    <div class="reply-form" id="reply-form-${comment.id}" style="display: none; margin-top: 1rem; padding-left: 1rem; border-left: 2px solid var(--border);">
-                        <textarea id="reply-content-${comment.id}" placeholder="Write your reply..." rows="2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary); margin-bottom: 0.5rem;"></textarea>
-                        <button onclick="addReply('${comment.id}')" class="reply-submit" style="padding: 0.5rem 1rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; cursor: pointer;">Post Reply</button>
+                    <div class="reply-form" id="reply-form-${comment.id}" style="display: none;">
+                        <textarea id="reply-content-${comment.id}" placeholder="Write a reply..." rows="2"></textarea>
+                        <button onclick="addReply('${comment.id}')" class="reply-submit">Post Reply</button>
                     </div>
                 </div>
             `).join('');
@@ -1751,7 +2113,7 @@
         // ==================== VOTING FUNCTIONS ====================
         window.vote = async function(projectId, type) {
             if (!currentUser) {
-                showNotification('Please login to vote', 'warning');
+                showNotification('Please sign in to vote', 'warning');
                 showAuthModal();
                 return;
             }
@@ -1801,8 +2163,6 @@
                         downvotes: newDownvotes
                     });
                 });
-                
-                showNotification(`Project ${type}voted!`, 'success');
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -1810,7 +2170,7 @@
 
         window.voteComment = async function(commentId, type) {
             if (!currentUser) {
-                showNotification('Please login to vote', 'warning');
+                showNotification('Please sign in to vote', 'warning');
                 showAuthModal();
                 return;
             }
@@ -1860,8 +2220,6 @@
                         downvotes: newDownvotes
                     });
                 });
-                
-                showNotification(`Comment ${type}voted!`, 'success');
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -1894,7 +2252,6 @@
                 });
                 
                 document.getElementById('newComment').value = '';
-                showNotification('Comment added!', 'success');
                 openProjectModal(projectId);
             } catch (error) {
                 showNotification(error.message, 'error');
@@ -1929,7 +2286,6 @@
                 
                 document.getElementById(`reply-content-${parentId}`).value = '';
                 document.getElementById(`reply-form-${parentId}`).style.display = 'none';
-                showNotification('Reply added!', 'success');
                 openProjectModal(currentProjectId);
             } catch (error) {
                 showNotification(error.message, 'error');
@@ -1937,7 +2293,7 @@
         };
 
         window.deleteComment = async function(commentId) {
-            if (!confirm('Are you sure you want to delete this comment?')) return;
+            if (!confirm('Delete this comment?')) return;
             
             try {
                 const commentRef = db.collection('comments').doc(commentId);
@@ -1961,8 +2317,7 @@
                     });
                 }
                 
-                showNotification('Comment deleted', 'success');
-                if (currentProjectId) openProjectModal(currentProjectId);
+                openProjectModal(currentProjectId);
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -1973,11 +2328,11 @@
             event.stopPropagation();
             
             if (!currentUser) {
-                showNotification('Please login to delete', 'warning');
+                showNotification('Please sign in', 'warning');
                 return;
             }
             
-            if (!confirm('Are you sure you want to delete this project?')) return;
+            if (!confirm('Delete this project?')) return;
             
             try {
                 const comments = await db.collection('comments')
@@ -1990,7 +2345,7 @@
                 
                 await batch.commit();
                 
-                showNotification('Project deleted successfully', 'success');
+                showNotification('Project deleted', 'success');
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -2010,26 +2365,8 @@
         function showNotification(message, type) {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                padding: 1rem 2rem;
-                background: var(--bg-secondary);
-                color: var(--text-primary);
-                border-radius: 40px;
-                box-shadow: 0 5px 15px var(--shadow);
-                border-left: 5px solid ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--danger)' : 'var(--warning)'};
-                z-index: 2000;
-                animation: slideIn 0.3s ease-out;
-                display: flex;
-                align-items: center;
-                gap: 0.8rem;
-                font-weight: 500;
-            `;
-            
             notification.innerHTML = `
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}" style="color: ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--danger)' : 'var(--warning)'};"></i>
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
                 ${message}
             `;
             
@@ -2054,18 +2391,19 @@
         }
 
         function initializeModals() {
-            document.querySelector('.close').addEventListener('click', () => {
-                document.getElementById('projectModal').style.display = 'none';
+            document.querySelectorAll('.modal-close, .close-auth').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById('projectModal').style.display = 'none';
+                    document.getElementById('authModal').style.display = 'none';
+                });
             });
-            
-            document.querySelector('.close-auth').addEventListener('click', hideAuthModal);
             
             window.addEventListener('click', (e) => {
                 if (e.target === document.getElementById('projectModal')) {
                     document.getElementById('projectModal').style.display = 'none';
                 }
                 if (e.target === document.getElementById('authModal')) {
-                    hideAuthModal();
+                    document.getElementById('authModal').style.display = 'none';
                 }
             });
         }
