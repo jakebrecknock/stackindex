@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>StackIndex - Share Your Vibe Coded Projects</title>
+    <title>CodeCove - Share Your Vibe Coded Projects</title>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts for more fun typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -18,46 +21,68 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            font-family: 'Fredoka', 'Segoe UI', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.2s;
         }
 
         :root {
-            --primary: #ff6b6b;
-            --secondary: #4ecdc4;
-            --accent: #ffe66d;
-            --danger: #ff4444;
-            --success: #00C851;
+            /* Fun retro gaming theme */
+            --primary: #FF6B9D;    /* Bubblegum pink */
+            --secondary: #6B5CA5;   /* Purple */
+            --accent: #FFD166;       /* Mustard yellow */
+            --success: #06D6A0;      /* Mint */
+            --warning: #FF9F1C;       /* Orange */
+            --danger: #EF476F;        /* Watermelon */
+            
+            /* Light mode */
+            --bg-primary-light: #FFF9F0;  /* Cream */
+            --bg-secondary-light: #FFFFFF;
+            --text-primary-light: #2D3047;
+            --text-secondary-light: #6B6B8B;
+            --border-light: #FFE5D9;
+            --shadow-light: rgba(255, 107, 157, 0.2);
+            --card-bg-light: #FFFFFF;
+            
+            /* Dark mode */
+            --bg-primary-dark: #1A1B2F;
+            --bg-secondary-dark: #2A2C44;
+            --text-primary-dark: #FFFFFF;
+            --text-secondary-dark: #B8B9D0;
+            --border-dark: #3D3F5E;
+            --shadow-dark: rgba(0, 0, 0, 0.4);
+            --card-bg-dark: #2A2C44;
         }
 
         /* Light Mode */
         .light-mode {
-            --bg-primary: #f7f7f7;
-            --bg-secondary: #ffffff;
-            --text-primary: #333333;
-            --text-secondary: #666666;
-            --border: #e0e0e0;
-            --shadow: rgba(0, 0, 0, 0.1);
-            --hover: #f0f0f0;
-            --card-bg: #ffffff;
+            --bg-primary: var(--bg-primary-light);
+            --bg-secondary: var(--bg-secondary-light);
+            --text-primary: var(--text-primary-light);
+            --text-secondary: var(--text-secondary-light);
+            --border: var(--border-light);
+            --shadow: var(--shadow-light);
+            --card-bg: var(--card-bg-light);
         }
 
         /* Dark Mode */
         .dark-mode {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --border: #404040;
-            --shadow: rgba(0, 0, 0, 0.3);
-            --hover: #3d3d3d;
-            --card-bg: #2d2d2d;
+            --bg-primary: var(--bg-primary-dark);
+            --bg-secondary: var(--bg-secondary-dark);
+            --text-primary: var(--text-primary-dark);
+            --text-secondary: var(--text-secondary-dark);
+            --border: var(--border-dark);
+            --shadow: var(--shadow-dark);
+            --card-bg: var(--card-bg-dark);
         }
 
         body {
             background-color: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 107, 157, 0.1) 0%, transparent 20%),
+                              radial-gradient(circle at 90% 50%, rgba(107, 92, 165, 0.1) 0%, transparent 25%),
+                              radial-gradient(circle at 30% 80%, rgba(255, 209, 102, 0.1) 0%, transparent 30%);
+            background-attachment: fixed;
         }
 
         .app-container {
@@ -65,35 +90,49 @@
             min-height: 100vh;
         }
 
-        /* Sidebar */
+        /* Sidebar - Now with fun shapes */
         .sidebar {
             width: 280px;
             background: var(--bg-secondary);
             padding: 2rem 1.5rem;
-            border-right: 1px solid var(--border);
+            border-right: 3px solid var(--primary);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             z-index: 100;
+            box-shadow: 5px 0 15px var(--shadow);
+            border-radius: 0 20px 20px 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            transform: rotate(-1deg);
         }
 
         .logo i {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: var(--primary);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         .logo h1 {
-            font-size: 1.5rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 700;
         }
 
         .theme-toggle {
@@ -101,16 +140,17 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 2rem;
-            padding: 0.5rem;
+            padding: 0.8rem;
             background: var(--bg-primary);
-            border-radius: 30px;
+            border-radius: 40px;
+            border: 2px solid var(--border);
         }
 
         .switch {
             position: relative;
             display: inline-block;
-            width: 50px;
-            height: 24px;
+            width: 60px;
+            height: 30px;
         }
 
         .switch input {
@@ -126,31 +166,32 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: var(--secondary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             transition: .4s;
         }
 
         .slider:before {
             position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
+            content: "☀️";
+            height: 22px;
+            width: 22px;
             left: 4px;
             bottom: 4px;
             background-color: white;
             transition: .4s;
-        }
-
-        input:checked + .slider {
-            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
         }
 
         input:checked + .slider:before {
-            transform: translateX(26px);
+            content: "🌙";
+            transform: translateX(30px);
         }
 
         .slider.round {
-            border-radius: 24px;
+            border-radius: 30px;
         }
 
         .slider.round:before {
@@ -160,38 +201,42 @@
         .nav-links {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.8rem;
             margin-bottom: 2rem;
         }
 
         .nav-btn {
-            padding: 1rem;
+            padding: 1.2rem;
             border: none;
-            background: none;
+            background: var(--bg-primary);
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: 1.1rem;
             text-align: left;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
             transition: all 0.3s;
             width: 100%;
+            border: 2px solid transparent;
         }
 
         .nav-btn i {
             width: 24px;
+            font-size: 1.2rem;
         }
 
         .nav-btn:hover {
-            background: var(--hover);
-            color: var(--primary);
+            transform: translateX(5px);
+            background: var(--bg-secondary);
+            border-color: var(--primary);
         }
 
         .nav-btn.active {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
+            border-color: var(--accent);
         }
 
         .user-section {
@@ -203,39 +248,47 @@
 
         .auth-button {
             width: 100%;
-            padding: 1rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
+            font-size: 1.1rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            border: 2px solid var(--accent);
+        }
+
+        .auth-button:hover {
+            transform: scale(1.02);
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
+            gap: 1rem;
+            padding: 0.8rem;
             background: var(--bg-primary);
-            border-radius: 30px;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 1.2rem;
+            border: 3px solid var(--accent);
         }
 
         .user-details {
@@ -243,14 +296,16 @@
         }
 
         .user-name {
-            font-weight: bold;
+            font-weight: 600;
             color: var(--text-primary);
+            font-size: 1rem;
         }
 
         .logout-btn {
             color: var(--danger);
             cursor: pointer;
             font-size: 0.9rem;
+            margin-top: 0.3rem;
         }
 
         /* Main Content */
@@ -266,6 +321,12 @@
 
         .tab-content.active {
             display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Dashboard Header */
@@ -274,8 +335,22 @@
         }
 
         .dashboard-header h2 {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             color: var(--text-primary);
+            font-size: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .dashboard-header h2:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 2px;
         }
 
         .search-sort {
@@ -283,67 +358,129 @@
             gap: 1rem;
             flex-wrap: wrap;
             align-items: center;
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
         }
 
         .search-box {
-            flex: 1;
+            flex: 2;
             min-width: 250px;
             position: relative;
         }
 
         .search-box i {
             position: absolute;
-            left: 1rem;
+            left: 1.2rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-secondary);
+            color: var(--primary);
+            font-size: 1.1rem;
         }
 
         .search-box input {
             width: 100%;
             padding: 1rem 1rem 1rem 3rem;
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 40px;
+            background: var(--bg-primary);
             color: var(--text-primary);
             font-size: 1rem;
         }
 
-        .search-sort select {
+        .search-box input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            flex: 3;
+        }
+
+        .filter-group select {
+            flex: 1;
+            min-width: 150px;
             padding: 1rem;
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 40px;
+            background: var(--bg-primary);
             color: var(--text-primary);
             cursor: pointer;
+            font-size: 1rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        .filter-group select:focus {
+            border-color: var(--primary);
+            outline: none;
         }
 
         /* Projects Grid */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin-top: 2rem;
         }
 
         .project-card {
             background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            border: 3px solid var(--border);
+            border-radius: 25px;
             padding: 1.5rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
             cursor: pointer;
             position: relative;
+            box-shadow: 0 8px 0 var(--shadow);
         }
 
         .project-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px var(--shadow);
+            box-shadow: 0 12px 0 var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 2;
+            background: var(--bg-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border);
+        }
+
+        .favorite-btn.active {
+            color: var(--danger);
+            animation: heartBeat 0.3s;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         .project-card h3 {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             color: var(--primary);
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            padding-right: 3rem;
         }
 
         .project-description {
@@ -363,12 +500,15 @@
             margin-bottom: 1rem;
             font-size: 0.9rem;
             color: var(--text-secondary);
+            background: var(--bg-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
         }
 
         .project-author {
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.5rem;
         }
 
         .project-tags {
@@ -379,46 +519,40 @@
         }
 
         .tag {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 0.2rem 0.8rem;
-            border-radius: 15px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
             font-size: 0.8rem;
+            border: 2px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .custom-tag {
+            background: linear-gradient(135deg, var(--accent), var(--warning));
+            color: white;
         }
 
         .project-stats {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .project-stats i {
             margin-right: 0.3rem;
-        }
-
-        .project-actions {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            display: flex;
-            gap: 0.5rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .project-card:hover .project-actions {
-            opacity: 1;
+            color: var(--primary);
         }
 
         .delete-btn {
-            color: var(--danger);
+            color: white;
             cursor: pointer;
-            background: var(--bg-secondary);
+            background: var(--danger);
             padding: 0.5rem;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -429,32 +563,39 @@
             max-width: 800px;
             margin: 0 auto;
             background: var(--bg-secondary);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            padding: 2.5rem;
+            border-radius: 30px;
+            border: 3px solid var(--border);
+            box-shadow: 0 10px 0 var(--shadow);
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             color: var(--text-primary);
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
         .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group textarea {
             width: 100%;
-            padding: 0.8rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 15px;
             background: var(--bg-primary);
             color: var(--text-primary);
             font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
         }
 
         .form-group textarea {
@@ -465,71 +606,132 @@
         .tags-selector {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
+            gap: 0.8rem;
+            margin-top: 1rem;
         }
 
         .tag-option {
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 20px;
+            border: 2px solid var(--border);
+            border-radius: 40px;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: 500;
         }
 
         .tag-option.selected {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            border-color: transparent;
+            border-color: var(--accent);
+        }
+
+        .custom-tag-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .custom-tag-input input {
+            flex: 1;
+        }
+
+        .custom-tag-input button {
+            padding: 0 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 1rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
+            border-radius: 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            border: 2px solid var(--accent);
         }
 
-        /* About Page */
-        .about-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        .submit-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* Profile Tab */
+        .profile-header {
+            display: flex;
+            align-items: center;
             gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .about-card {
             background: var(--bg-secondary);
             padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            border-radius: 30px;
+            border: 3px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            border: 4px solid var(--accent);
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .profile-stat {
             text-align: center;
         }
 
-        .about-card i {
-            font-size: 3rem;
+        .profile-stat .number {
+            font-size: 1.5rem;
+            font-weight: bold;
             color: var(--primary);
-            margin-bottom: 1rem;
         }
 
-        .about-card h3 {
-            margin-bottom: 1rem;
-            color: var(--text-primary);
+        .profile-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
-        .about-card p {
-            color: var(--text-secondary);
-            line-height: 1.6;
+        .profile-tab {
+            padding: 0.8rem 2rem;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .profile-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
         /* Modal */
@@ -540,28 +742,43 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 1000;
             overflow-y: auto;
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
             background: var(--bg-secondary);
             margin: 5% auto;
-            padding: 2rem;
+            padding: 2.5rem;
             width: 90%;
             max-width: 800px;
-            border-radius: 12px;
+            border-radius: 30px;
             position: relative;
+            border: 3px solid var(--primary);
+            box-shadow: 0 15px 0 var(--shadow);
         }
 
         .close, .close-auth {
             position: absolute;
             right: 1.5rem;
             top: 1rem;
-            font-size: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
             color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary);
+            border-radius: 50%;
+        }
+
+        .close:hover, .close-auth:hover {
+            background: var(--danger);
+            color: white;
         }
 
         /* Auth Modal */
@@ -577,24 +794,26 @@
 
         .auth-tab {
             flex: 1;
-            padding: 0.8rem;
+            padding: 1rem;
             border: none;
-            background: none;
+            background: var(--bg-primary);
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 1rem;
-            border-bottom: 2px solid transparent;
+            font-size: 1.1rem;
+            border-radius: 40px;
+            border: 2px solid var(--border);
         }
 
         .auth-tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: var(--accent);
         }
 
         .auth-form {
             display: none;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.2rem;
         }
 
         .auth-form.active {
@@ -602,210 +821,67 @@
         }
 
         .auth-form input {
-            padding: 0.8rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 15px;
             background: var(--bg-primary);
             color: var(--text-primary);
         }
 
-        .auth-btn, .google-btn {
-            padding: 0.8rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
+        .auth-form input:focus {
+            border-color: var(--primary);
+            outline: none;
         }
 
         .auth-btn {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         .google-btn {
+            padding: 1rem;
             background: var(--bg-primary);
             color: var(--text-primary);
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
+            border-radius: 40px;
             margin-top: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            cursor: pointer;
             width: 100%;
+            font-weight: 600;
         }
 
-        /* Comments Section */
-        .comments-section {
-            margin-top: 2rem;
-        }
-
-        .comment {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .comment-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .comment-author {
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .comment-date {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .comment-content {
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .comment-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .comment-votes {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .vote-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 0.2rem 0.5rem;
-            font-size: 1rem;
-        }
-
-        .vote-btn:hover {
-            color: var(--primary);
-        }
-
-        .reply-btn {
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .reply-form {
-            margin-top: 1rem;
-            padding-left: 1rem;
-            border-left: 2px solid var(--border);
-        }
-
-        .reply-form textarea {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .reply-submit {
-            padding: 0.5rem 1rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .replies {
-            margin-left: 2rem;
-            margin-top: 1rem;
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 1rem 2rem;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px var(--shadow);
-            border-left: 4px solid;
-            z-index: 2000;
-            animation: slideIn 0.3s ease-out;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .notification.success { border-left-color: var(--success); }
-        .notification.error { border-left-color: var(--danger); }
-        .notification.warning { border-left-color: var(--accent); }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .google-btn:hover {
+            border-color: var(--primary);
         }
 
         /* Loading */
         .loading {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem;
             color: var(--text-secondary);
+            font-size: 1.2rem;
         }
 
         .loading i {
             font-size: 2rem;
             color: var(--primary);
             animation: spin 1s linear infinite;
-            margin-right: 0.5rem;
+            margin-right: 1rem;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        .project-link {
-            margin: 1rem 0;
-        }
-
-        .project-link a {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-        }
-
-        .project-voting {
-            display: flex;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .add-comment {
-            margin: 1rem 0;
-        }
-
-        .add-comment textarea {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
         }
 
         /* Responsive */
@@ -815,6 +891,7 @@
                 height: auto;
                 position: relative;
                 padding: 1rem;
+                border-radius: 0;
             }
             
             .main-content {
@@ -835,12 +912,13 @@
                 flex-direction: column;
             }
             
-            .search-box {
+            .filter-group {
                 width: 100%;
             }
             
-            .search-sort select {
-                width: 100%;
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
             }
         }
     </style>
@@ -850,8 +928,8 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="logo">
-                <i class="fas fa-palette"></i>
-                <h1>StackIndex</h1>
+                <i class="fas fa-crown"></i>
+                <h1>CodeCove</h1>
             </div>
             
             <div class="theme-toggle">
@@ -870,8 +948,11 @@
                 <button class="nav-btn" data-tab="create">
                     <i class="fas fa-plus-circle"></i> Share Project
                 </button>
+                <button class="nav-btn" data-tab="profile">
+                    <i class="fas fa-user-astronaut"></i> My Profile
+                </button>
                 <button class="nav-btn" data-tab="about">
-                    <i class="fas fa-info-circle"></i> About
+                    <i class="fas fa-rocket"></i> About
                 </button>
             </div>
 
@@ -889,29 +970,32 @@
             <!-- Dashboard Tab -->
             <div id="dashboard" class="tab-content active">
                 <div class="dashboard-header">
-                    <h2>Discover Vibe Coded Projects</h2>
+                    <h2><i class="fas fa-compass"></i> Discover Amazing Projects</h2>
                     <div class="search-sort">
                         <div class="search-box">
                             <i class="fas fa-search"></i>
                             <input type="text" id="searchInput" placeholder="Search projects...">
                         </div>
-                        <select id="sortSelect">
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                            <option value="mostUpvoted">Most Upvoted</option>
-                            <option value="mostDownvoted">Most Downvoted</option>
-                        </select>
-                        <select id="categoryFilter">
-                            <option value="all">All Categories</option>
-                            <option value="Game">Game</option>
-                            <option value="Tool">Tool</option>
-                            <option value="Website">Website</option>
-                            <option value="Mobile App">Mobile App</option>
-                            <option value="AI/ML">AI/ML</option>
-                            <option value="Utility">Utility</option>
-                            <option value="Creative">Creative</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        <div class="filter-group">
+                            <select id="sortSelect">
+                                <option value="newest">✨ Newest First</option>
+                                <option value="oldest">📅 Oldest First</option>
+                                <option value="mostUpvoted">🔥 Most Upvoted</option>
+                                <option value="mostDownvoted">💧 Most Downvoted</option>
+                                <option value="mostFavorited">⭐ Most Favorited</option>
+                            </select>
+                            <select id="categoryFilter">
+                                <option value="all">🎮 All Categories</option>
+                                <option value="Game">🎮 Game</option>
+                                <option value="Tool">🔧 Tool</option>
+                                <option value="Website">🌐 Website</option>
+                                <option value="Mobile App">📱 Mobile App</option>
+                                <option value="AI/ML">🤖 AI/ML</option>
+                                <option value="Utility">⚡ Utility</option>
+                                <option value="Creative">🎨 Creative</option>
+                                <option value="Other">✨ Other</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 
@@ -922,54 +1006,65 @@
 
             <!-- Create Tab -->
             <div id="create" class="tab-content">
-                <h2>Share Your Creation</h2>
+                <h2><i class="fas fa-plus-circle"></i> Share Your Creation</h2>
                 <form id="projectForm" class="project-form">
                     <div class="form-group">
-                        <label>Project Name *</label>
-                        <input type="text" id="projectName" required maxlength="100">
+                        <label>🎮 Project Name *</label>
+                        <input type="text" id="projectName" required maxlength="100" placeholder="My Awesome Project">
                     </div>
                     
                     <div class="form-group">
-                        <label>Description *</label>
-                        <textarea id="projectDescription" required maxlength="1000"></textarea>
+                        <label>📝 Description *</label>
+                        <textarea id="projectDescription" required maxlength="1000" placeholder="Tell us about your project..."></textarea>
                         <small><span id="descCount">0</span>/1000</small>
                     </div>
                     
                     <div class="form-group">
-                        <label>Project URL/Link *</label>
-                        <input type="url" id="projectLink" required placeholder="https://...">
+                        <label>🔗 Project URL/Link *</label>
+                        <input type="url" id="projectLink" required placeholder="https://myproject.com">
                     </div>
                     
                     <div class="form-group">
-                        <label>Tags (Select up to 5)</label>
+                        <label>🏷️ Tags (Select up to 5, or add custom)</label>
                         <div class="tags-selector" id="tagsSelector"></div>
+                        <div class="custom-tag-input">
+                            <input type="text" id="customTag" placeholder="Add custom tag...">
+                            <button type="button" onclick="addCustomTag()">Add</button>
+                        </div>
                         <small id="tagCount">0/5 selected</small>
                     </div>
                     
                     <button type="submit" class="submit-btn">
-                        <i class="fas fa-upload"></i> Publish Project
+                        <i class="fas fa-rocket"></i> Launch Project
                     </button>
                 </form>
             </div>
 
+            <!-- Profile Tab -->
+            <div id="profile" class="tab-content">
+                <div id="profileContent">
+                    <div class="loading"><i class="fas fa-spinner"></i> Loading profile...</div>
+                </div>
+            </div>
+
             <!-- About Tab -->
             <div id="about" class="tab-content">
-                <h2>About StackIndex</h2>
-                <div class="about-content">
-                    <div class="about-card">
-                        <i class="fas fa-heart"></i>
+                <h2><i class="fas fa-rocket"></i> About CodeCove</h2>
+                <div class="about-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <div class="about-card" style="background: var(--bg-secondary); padding: 2rem; border-radius: 30px; border: 3px solid var(--border); text-align: center;">
+                        <i class="fas fa-heart" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
                         <h3>Our Mission</h3>
-                        <p>StackIndex is a vibrant community for developers who "vibe code" – creating amazing projects through intuition and joy. Share your creations, discover inspiration, and connect with fellow makers.</p>
+                        <p>CodeCove is a vibrant community for developers who "vibe code" – creating amazing projects through intuition and joy. Share your creations, discover inspiration, and connect with fellow makers.</p>
                     </div>
                     
-                    <div class="about-card">
-                        <i class="fas fa-code"></i>
+                    <div class="about-card" style="background: var(--bg-secondary); padding: 2rem; border-radius: 30px; border: 3px solid var(--border); text-align: center;">
+                        <i class="fas fa-code" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
                         <h3>How It Works</h3>
-                        <p>Share your project with a description, link, and up to 5 tags. Upvote projects you love, comment with feedback, and build your portfolio in a supportive environment.</p>
+                        <p>Share your project with a description, link, and up to 5 tags. Upvote projects you love, favorite them, comment with feedback, and build your portfolio in a supportive environment.</p>
                     </div>
                     
-                    <div class="about-card">
-                        <i class="fas fa-users"></i>
+                    <div class="about-card" style="background: var(--bg-secondary); padding: 2rem; border-radius: 30px; border: 3px solid var(--border); text-align: center;">
+                        <i class="fas fa-users" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
                         <h3>Community Guidelines</h3>
                         <p>Be kind, give constructive feedback, respect others' work, and have fun! Projects of all skill levels are welcome – we're all here to grow together.</p>
                     </div>
@@ -1016,16 +1111,14 @@
 
     <script>
         // ==================== FIREBASE CONFIGURATION ====================
-        // REPLACE WITH YOUR OWN FIREBASE CONFIG
         const firebaseConfig = {
- apiKey: "AIzaSyCHSnjqnMym6yIEsj5csHxRGD5Z4dPMU78",
- authDomain: "stackindex-da836.firebaseapp.com",
- projectId: "stackindex-da836",
- storageBucket: "stackindex-da836.firebasestorage.app",
- messagingSenderId: "1064883963561",
- appId: "1:1064883963561:web:05daa4e2753c57d4c98bb8"
-};
-
+            apiKey: "AIzaSyCHSnjqnMym6yIEsj5csHxRGD5Z4dPMU78",
+            authDomain: "stackindex-da836.firebaseapp.com",
+            projectId: "stackindex-da836",
+            storageBucket: "stackindex-da836.firebasestorage.app",
+            messagingSenderId: "1064883963561",
+            appId: "1:1064883963561:web:05daa4e2753c57d4c98bb8"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -1042,7 +1135,7 @@
         });
 
         // Available tags
-        const AVAILABLE_TAGS = ['Game', 'Tool', 'Website', 'Mobile App', 'AI/ML', 'Utility', 'Creative', 'Other'];
+        const AVAILABLE_TAGS = ['Game', 'Tool', 'Website', 'Mobile App', 'AI/ML', 'Utility', 'Creative'];
 
         // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
@@ -1053,7 +1146,8 @@
         auth.onAuthStateChanged(user => {
             currentUser = user;
             updateAuthUI();
-            loadProjects(); // Reload projects when auth state changes
+            loadProjects();
+            if (user) loadProfile();
         });
 
         function updateAuthUI() {
@@ -1129,6 +1223,7 @@
             try {
                 await auth.signOut();
                 showNotification('Logged out successfully', 'success');
+                document.querySelector('[data-tab="dashboard"]').click();
             } catch (error) {
                 showNotification(error.message, 'error');
             }
@@ -1163,6 +1258,10 @@
                     btn.classList.add('active');
                     const tabId = btn.dataset.tab;
                     document.getElementById(tabId).classList.add('active');
+                    
+                    if (tabId === 'profile' && currentUser) {
+                        loadProfile();
+                    }
                 });
             });
         }
@@ -1178,6 +1277,30 @@
                 tagsSelector.appendChild(tagElement);
             });
         }
+
+        window.addCustomTag = function() {
+            const input = document.getElementById('customTag');
+            const tag = input.value.trim();
+            
+            if (!tag) return;
+            
+            if (selectedTags.size >= 5) {
+                showNotification('You can only select up to 5 tags', 'warning');
+                return;
+            }
+            
+            selectedTags.add(tag);
+            document.getElementById('tagCount').textContent = `${selectedTags.size}/5 selected`;
+            
+            // Add to tags selector as selected
+            const tagElement = document.createElement('span');
+            tagElement.className = 'tag-option selected custom-tag';
+            tagElement.textContent = tag;
+            tagElement.addEventListener('click', () => toggleTag(tag, tagElement));
+            document.getElementById('tagsSelector').appendChild(tagElement);
+            
+            input.value = '';
+        };
 
         function toggleTag(tag, element) {
             if (selectedTags.has(tag)) {
@@ -1220,6 +1343,7 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     upvotes: 0,
                     downvotes: 0,
+                    favorites: 0,
                     comments: 0
                 };
                 
@@ -1245,6 +1369,7 @@
             let query = db.collection('projects');
             
             const sortBy = document.getElementById('sortSelect')?.value || 'newest';
+            
             switch(sortBy) {
                 case 'newest':
                     query = query.orderBy('createdAt', 'desc');
@@ -1258,13 +1383,29 @@
                 case 'mostDownvoted':
                     query = query.orderBy('downvotes', 'desc');
                     break;
+                case 'mostFavorited':
+                    query = query.orderBy('favorites', 'desc');
+                    break;
+                default:
+                    query = query.orderBy('createdAt', 'desc');
             }
             
-            query.onSnapshot((snapshot) => {
+            query.onSnapshot(async (snapshot) => {
                 let projects = [];
                 snapshot.forEach(doc => {
                     projects.push({ id: doc.id, ...doc.data() });
                 });
+                
+                // Get user's favorites if logged in
+                let userFavorites = new Set();
+                if (currentUser) {
+                    const favSnapshot = await db.collection('favorites')
+                        .where('userId', '==', currentUser.uid)
+                        .get();
+                    favSnapshot.forEach(doc => {
+                        userFavorites.add(doc.data().projectId);
+                    });
+                }
                 
                 const categoryFilter = document.getElementById('categoryFilter')?.value;
                 if (categoryFilter && categoryFilter !== 'all') {
@@ -1276,15 +1417,16 @@
                     projects = projects.filter(p => 
                         p.name?.toLowerCase().includes(searchTerm) ||
                         p.description?.toLowerCase().includes(searchTerm) ||
-                        p.userName?.toLowerCase().includes(searchTerm)
+                        p.userName?.toLowerCase().includes(searchTerm) ||
+                        (p.tags && p.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
                     );
                 }
                 
-                displayProjects(projects);
+                displayProjects(projects, userFavorites);
             });
         }
 
-        function displayProjects(projects) {
+        function displayProjects(projects, userFavorites = new Set()) {
             const projectsGrid = document.getElementById('projectsGrid');
             
             if (projects.length === 0) {
@@ -1292,9 +1434,17 @@
                 return;
             }
             
-            projectsGrid.innerHTML = projects.map(project => `
+            projectsGrid.innerHTML = projects.map(project => {
+                const isFavorited = userFavorites.has(project.id);
+                
+                return `
                 <div class="project-card" onclick="openProjectModal('${project.id}')">
-                    <div class="project-actions">
+                    ${currentUser ? `
+                        <div class="favorite-btn ${isFavorited ? 'active' : ''}" onclick="toggleFavorite('${project.id}', event)">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    ` : ''}
+                    <div class="project-actions" style="position: absolute; top: 1rem; left: 1rem;">
                         ${currentUser && project.userId === currentUser.uid ? 
                             `<i class="fas fa-trash delete-btn" onclick="deleteProject('${project.id}', event)"></i>` : 
                             ''}
@@ -1308,17 +1458,173 @@
                         <span>${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                     </div>
                     <div class="project-tags">
-                        ${project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                        ${project.tags ? project.tags.map(tag => `<span class="tag ${!AVAILABLE_TAGS.includes(tag) ? 'custom-tag' : ''}">${tag}</span>`).join('') : ''}
                     </div>
                     <div class="project-stats">
                         <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
                         <span><i class="fas fa-arrow-down"></i> ${project.downvotes || 0}</span>
+                        <span><i class="fas fa-heart"></i> ${project.favorites || 0}</span>
                         <span><i class="fas fa-comment"></i> ${project.comments || 0}</span>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
+        // ==================== FAVORITE FUNCTIONS ====================
+        window.toggleFavorite = async function(projectId, event) {
+            event.stopPropagation();
+            
+            if (!currentUser) {
+                showNotification('Please login to favorite', 'warning');
+                showAuthModal();
+                return;
+            }
+            
+            try {
+                const favoriteRef = db.collection('favorites').doc(`${currentUser.uid}_${projectId}`);
+                const favoriteDoc = await favoriteRef.get();
+                const projectRef = db.collection('projects').doc(projectId);
+                
+                if (favoriteDoc.exists) {
+                    await favoriteRef.delete();
+                    await projectRef.update({
+                        favorites: firebase.firestore.FieldValue.increment(-1)
+                    });
+                    showNotification('Removed from favorites', 'success');
+                } else {
+                    await favoriteRef.set({
+                        userId: currentUser.uid,
+                        projectId: projectId,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    await projectRef.update({
+                        favorites: firebase.firestore.FieldValue.increment(1)
+                    });
+                    showNotification('Added to favorites! ⭐', 'success');
+                }
+            } catch (error) {
+                showNotification(error.message, 'error');
+            }
+        };
+
+        // ==================== PROFILE FUNCTIONS ====================
+        async function loadProfile() {
+            if (!currentUser) {
+                document.querySelector('[data-tab="dashboard"]').click();
+                showNotification('Please login to view profile', 'warning');
+                return;
+            }
+            
+            const profileContent = document.getElementById('profileContent');
+            
+            try {
+                // Get user's projects
+                const projectsSnapshot = await db.collection('projects')
+                    .where('userId', '==', currentUser.uid)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                const userProjects = [];
+                projectsSnapshot.forEach(doc => {
+                    userProjects.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Get user's favorites
+                const favoritesSnapshot = await db.collection('favorites')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                
+                const favoriteProjects = [];
+                for (const favDoc of favoritesSnapshot.docs) {
+                    const projectDoc = await db.collection('projects').doc(favDoc.data().projectId).get();
+                    if (projectDoc.exists) {
+                        favoriteProjects.push({ id: projectDoc.id, ...projectDoc.data() });
+                    }
+                }
+                
+                displayProfile(userProjects, favoriteProjects);
+            } catch (error) {
+                showNotification(error.message, 'error');
+            }
+        }
+
+        function displayProfile(userProjects, favoriteProjects) {
+            const profileContent = document.getElementById('profileContent');
+            const displayName = currentUser.displayName || currentUser.email.split('@')[0];
+            const initial = displayName.charAt(0).toUpperCase();
+            
+            profileContent.innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-avatar-large">${initial}</div>
+                    <div>
+                        <h2>${escapeHtml(displayName)}</h2>
+                        <p>${currentUser.email}</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="number">${userProjects.length}</div>
+                                <div>Projects</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="number">${favoriteProjects.length}</div>
+                                <div>Favorites</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-tabs">
+                    <button class="profile-tab active" onclick="showProfileTab('projects')">My Projects</button>
+                    <button class="profile-tab" onclick="showProfileTab('favorites')">Favorites ⭐</button>
+                </div>
+                
+                <div id="profileProjects" class="profile-grid">
+                    ${userProjects.length === 0 ? 
+                        '<p>No projects yet. Share your first project!</p>' : 
+                        userProjects.map(project => `
+                            <div class="project-card" onclick="openProjectModal('${project.id}')">
+                                <h3>${escapeHtml(project.name)}</h3>
+                                <p class="project-description">${escapeHtml(project.description?.substring(0, 100))}...</p>
+                                <div class="project-stats">
+                                    <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
+                                    <span><i class="fas fa-heart"></i> ${project.favorites || 0}</span>
+                                </div>
+                            </div>
+                        `).join('')
+                    }
+                </div>
+                
+                <div id="profileFavorites" class="profile-grid" style="display: none;">
+                    ${favoriteProjects.length === 0 ? 
+                        '<p>No favorites yet. Star some projects!</p>' : 
+                        favoriteProjects.map(project => `
+                            <div class="project-card" onclick="openProjectModal('${project.id}')">
+                                <h3>${escapeHtml(project.name)}</h3>
+                                <p class="project-description">${escapeHtml(project.description?.substring(0, 100))}...</p>
+                                <div class="project-stats">
+                                    <span><i class="fas fa-arrow-up"></i> ${project.upvotes || 0}</span>
+                                    <span><i class="fas fa-heart"></i> ${project.favorites || 0}</span>
+                                </div>
+                            </div>
+                        `).join('')
+                    }
+                </div>
+            `;
+        }
+
+        window.showProfileTab = function(tab) {
+            document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.profile-grid').forEach(g => g.style.display = 'none');
+            
+            if (tab === 'projects') {
+                document.querySelector('.profile-tab').classList.add('active');
+                document.getElementById('profileProjects').style.display = 'grid';
+            } else {
+                document.querySelectorAll('.profile-tab')[1].classList.add('active');
+                document.getElementById('profileFavorites').style.display = 'grid';
+            }
+        };
+
+        // ==================== MODAL FUNCTIONS ====================
         window.openProjectModal = async function(projectId) {
             currentProjectId = projectId;
             const modal = document.getElementById('projectModal');
@@ -1354,29 +1660,29 @@
             
             content.innerHTML = `
                 <h2>${escapeHtml(project.name)}</h2>
-                <div class="project-meta">
+                <div class="project-meta" style="justify-content: flex-start; gap: 2rem;">
                     <span><i class="fas fa-user"></i> ${escapeHtml(project.userName)}</span>
                     <span><i class="fas fa-calendar"></i> ${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                 </div>
                 
-                <p class="project-full-description">${escapeHtml(project.description)}</p>
+                <p style="margin: 1.5rem 0; line-height: 1.6;">${escapeHtml(project.description)}</p>
                 
-                <div class="project-link">
-                    <a href="${escapeHtml(project.link)}" target="_blank" rel="noopener noreferrer">
+                <div class="project-link" style="margin: 1rem 0;">
+                    <a href="${escapeHtml(project.link)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.8rem 2rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; border-radius: 40px; font-weight: 600;">
                         <i class="fas fa-external-link-alt"></i> View Project
                     </a>
                 </div>
                 
-                <div class="project-tags">
-                    ${project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                <div class="project-tags" style="margin: 1rem 0;">
+                    ${project.tags ? project.tags.map(tag => `<span class="tag ${!AVAILABLE_TAGS.includes(tag) ? 'custom-tag' : ''}">${tag}</span>`).join('') : ''}
                 </div>
                 
-                <div class="project-voting">
-                    <button class="vote-btn" onclick="vote('${project.id}', 'up')">
-                        <i class="fas fa-arrow-up"></i> ${project.upvotes || 0}
+                <div class="project-voting" style="display: flex; gap: 1rem; margin: 1.5rem 0;">
+                    <button class="vote-btn" onclick="vote('${project.id}', 'up')" style="padding: 0.8rem 2rem; background: var(--bg-primary); border: 2px solid var(--border); border-radius: 40px; cursor: pointer;">
+                        <i class="fas fa-arrow-up"></i> Upvote (${project.upvotes || 0})
                     </button>
-                    <button class="vote-btn" onclick="vote('${project.id}', 'down')">
-                        <i class="fas fa-arrow-down"></i> ${project.downvotes || 0}
+                    <button class="vote-btn" onclick="vote('${project.id}', 'down')" style="padding: 0.8rem 2rem; background: var(--bg-primary); border: 2px solid var(--border); border-radius: 40px; cursor: pointer;">
+                        <i class="fas fa-arrow-down"></i> Downvote (${project.downvotes || 0})
                     </button>
                 </div>
                 
@@ -1384,12 +1690,12 @@
                     <h3>Comments (${comments.length})</h3>
                     
                     ${currentUser ? `
-                        <div class="add-comment">
-                            <textarea id="newComment" placeholder="Share your thoughts..." rows="3"></textarea>
-                            <button onclick="addComment('${project.id}')" class="submit-btn">Post Comment</button>
+                        <div class="add-comment" style="margin: 1rem 0;">
+                            <textarea id="newComment" placeholder="Share your thoughts..." rows="3" style="width: 100%; padding: 1rem; border: 2px solid var(--border); border-radius: 15px; background: var(--bg-primary); color: var(--text-primary); margin-bottom: 0.5rem;"></textarea>
+                            <button onclick="addComment('${project.id}')" class="submit-btn" style="padding: 0.8rem;">Post Comment</button>
                         </div>
                     ` : `
-                        <p><a href="#" onclick="showAuthModal(); return false;">Login</a> to comment</p>
+                        <p style="margin: 1rem 0;"><a href="#" onclick="showAuthModal(); return false;">Login</a> to comment</p>
                     `}
                     
                     <div class="comments-list">
@@ -1405,38 +1711,38 @@
             if (filteredComments.length === 0) return '';
             
             return filteredComments.map(comment => `
-                <div class="comment" id="comment-${comment.id}">
-                    <div class="comment-header">
-                        <span class="comment-author">${escapeHtml(comment.userName)}</span>
-                        <span class="comment-date">${comment.createdAt ? new Date(comment.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
+                <div class="comment" id="comment-${comment.id}" style="background: var(--bg-primary); border: 1px solid var(--border); border-radius: 15px; padding: 1rem; margin-bottom: 1rem;">
+                    <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span class="comment-author" style="font-weight: bold; color: var(--primary);">${escapeHtml(comment.userName)}</span>
+                        <span class="comment-date" style="font-size: 0.8rem; color: var(--text-secondary);">${comment.createdAt ? new Date(comment.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                     </div>
-                    <div class="comment-content">${escapeHtml(comment.content)}</div>
-                    <div class="comment-actions">
-                        <div class="comment-votes">
-                            <button class="vote-btn" onclick="voteComment('${comment.id}', 'up')">
+                    <div class="comment-content" style="margin-bottom: 0.5rem;">${escapeHtml(comment.content)}</div>
+                    <div class="comment-actions" style="display: flex; gap: 1rem; align-items: center;">
+                        <div class="comment-votes" style="display: flex; align-items: center; gap: 0.3rem;">
+                            <button class="vote-btn" onclick="voteComment('${comment.id}', 'up')" style="background: none; border: none; color: var(--text-secondary); cursor: pointer;">
                                 <i class="fas fa-arrow-up"></i> ${comment.upvotes || 0}
                             </button>
-                            <button class="vote-btn" onclick="voteComment('${comment.id}', 'down')">
+                            <button class="vote-btn" onclick="voteComment('${comment.id}', 'down')" style="background: none; border: none; color: var(--text-secondary); cursor: pointer;">
                                 <i class="fas fa-arrow-down"></i> ${comment.downvotes || 0}
                             </button>
                         </div>
                         ${currentUser ? `
-                            <span class="reply-btn" onclick="showReplyForm('${comment.id}')">
+                            <span class="reply-btn" onclick="showReplyForm('${comment.id}')" style="color: var(--text-secondary); cursor: pointer; font-size: 0.9rem;">
                                 <i class="fas fa-reply"></i> Reply
                             </span>
                         ` : ''}
                         ${currentUser && comment.userId === currentUser.uid ? `
-                            <span class="delete-btn" onclick="deleteComment('${comment.id}')">
+                            <span class="delete-btn" onclick="deleteComment('${comment.id}')" style="color: var(--danger); cursor: pointer;">
                                 <i class="fas fa-trash"></i>
                             </span>
                         ` : ''}
                     </div>
-                    <div class="replies" id="replies-${comment.id}">
+                    <div class="replies" id="replies-${comment.id}" style="margin-left: 2rem; margin-top: 1rem;">
                         ${renderComments(comments, comment.id)}
                     </div>
-                    <div class="reply-form" id="reply-form-${comment.id}" style="display: none;">
-                        <textarea id="reply-content-${comment.id}" placeholder="Write your reply..." rows="2"></textarea>
-                        <button onclick="addReply('${comment.id}')" class="reply-submit">Post Reply</button>
+                    <div class="reply-form" id="reply-form-${comment.id}" style="display: none; margin-top: 1rem; padding-left: 1rem; border-left: 2px solid var(--border);">
+                        <textarea id="reply-content-${comment.id}" placeholder="Write your reply..." rows="2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary); margin-bottom: 0.5rem;"></textarea>
+                        <button onclick="addReply('${comment.id}')" class="reply-submit" style="padding: 0.5rem 1rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; cursor: pointer;">Post Reply</button>
                     </div>
                 </div>
             `).join('');
@@ -1704,8 +2010,26 @@
         function showNotification(message, type) {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 1rem 2rem;
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+                border-radius: 40px;
+                box-shadow: 0 5px 15px var(--shadow);
+                border-left: 5px solid ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--danger)' : 'var(--warning)'};
+                z-index: 2000;
+                animation: slideIn 0.3s ease-out;
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                font-weight: 500;
+            `;
+            
             notification.innerHTML = `
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}" style="color: ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--danger)' : 'var(--warning)'};"></i>
                 ${message}
             `;
             
