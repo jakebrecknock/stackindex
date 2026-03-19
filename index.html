@@ -11,13 +11,13 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDKs - Load in specific order -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     
     <style>
-        /* All existing styles remain exactly the same */
+        /* All existing styles remain exactly the same as before */
         * {
             margin: 0;
             padding: 0;
@@ -1461,36 +1461,6 @@
     </div>
 
     <script>
-        // ==================== SUPPRESS FIREBASE CONSOLE MESSAGES ====================
-        // Save original console methods
-        const originalConsole = {
-            log: console.log,
-            warn: console.warn,
-            error: console.error
-        };
-
-        // Override console to filter out Firebase connection messages
-        console.log = function(...args) {
-            const message = args.join(' ');
-            if (!message.includes('@firebase') && !message.includes('Firebase') && !message.includes('WebChannel')) {
-                originalConsole.log.apply(console, args);
-            }
-        };
-
-        console.warn = function(...args) {
-            const message = args.join(' ');
-            if (!message.includes('@firebase') && !message.includes('Firebase')) {
-                originalConsole.warn.apply(console, args);
-            }
-        };
-
-        console.error = function(...args) {
-            const message = args.join(' ');
-            if (!message.includes('@firebase') && !message.includes('Firebase') && !message.includes('WebChannel')) {
-                originalConsole.error.apply(console, args);
-            }
-        };
-
         // ==================== FIREBASE CONFIGURATION ====================
         const firebaseConfig = {
             apiKey: "AIzaSyCHSnjqnMym6yIEsj5csHxRGD5Z4dPMU78",
@@ -1501,28 +1471,21 @@
             appId: "1:1064883963561:web:05daa4e2753c57d4c98bb8"
         };
 
-        // Initialize Firebase with error handling
-        let db, auth;
-        try {
-            firebase.initializeApp(firebaseConfig);
-            auth = firebase.auth();
-            db = firebase.firestore();
-            
-            // Disable persistent logging
-            firebase.firestore.setLogLevel('silent');
-            
-            // Enable offline persistence with error handling
-            db.enablePersistence({ experimentalForceOwningTab: true })
-                .catch(err => {
-                    if (err.code === 'failed-precondition') {
-                        // Multiple tabs open, ignore
-                    } else if (err.code === 'unimplemented') {
-                        // Browser doesn't support persistence, ignore
-                    }
-                });
-        } catch (error) {
-            console.error('Firebase initialization error:', error);
-        }
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Disable all Firebase logs
+        firebase.firestore.setLogLevel('silent');
+
+        // Enable persistence with better error handling
+        db.enablePersistence({ experimentalForceOwningTab: true })
+            .catch(err => {
+                if (err.code === 'failed-precondition') {
+                    console.log('Multiple tabs open');
+                }
+            });
 
         // Available tags
         const AVAILABLE_TAGS = ['Game', 'Tool', 'Website', 'Mobile App', 'AI/ML', 'Utility', 'Creative'];
@@ -1534,16 +1497,14 @@
         let projectsUnsubscribe = null;
 
         // ==================== AUTH FUNCTIONS ====================
-        if (auth) {
-            auth.onAuthStateChanged(user => {
-                currentUser = user;
-                updateAuthUI();
-                if (projectsUnsubscribe) {
-                    projectsUnsubscribe();
-                }
-                loadProjects();
-            });
-        }
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            updateAuthUI();
+            if (projectsUnsubscribe) {
+                projectsUnsubscribe();
+            }
+            loadProjects();
+        });
 
         function updateAuthUI() {
             const authContainer = document.getElementById('authContainer');
@@ -1765,64 +1726,41 @@
 
         // ==================== PROJECTS FUNCTIONS ====================
         function loadProjects() {
-            if (!db) return;
-            
             const projectsGrid = document.getElementById('projectsGrid');
-            let query = db.collection('projects');
             
-            const sortBy = document.getElementById('sortSelect')?.value || 'newest';
-            
-            try {
-                switch(sortBy) {
-                    case 'newest':
-                        query = query.orderBy('createdAt', 'desc');
-                        break;
-                    case 'oldest':
-                        query = query.orderBy('createdAt', 'asc');
-                        break;
-                    case 'mostUpvoted':
-                        query = query.orderBy('upvotes', 'desc');
-                        break;
-                    case 'mostFavorited':
-                        query = query.orderBy('favorites', 'desc');
-                        break;
-                    default:
-                        query = query.orderBy('createdAt', 'desc');
-                }
-            } catch (error) {
-                console.log('Sort error, using default');
-            }
-            
-            if (projectsUnsubscribe) {
-                projectsUnsubscribe();
-            }
-            
-            try {
-                projectsUnsubscribe = query.onSnapshot(async (snapshot) => {
+            // Simple query without complex ordering first
+            db.collection('projects').get()
+                .then((snapshot) => {
                     let projects = [];
                     snapshot.forEach(doc => {
                         projects.push({ id: doc.id, ...doc.data() });
                     });
                     
-                    let userFavorites = new Set();
-                    if (currentUser) {
-                        try {
-                            const favSnapshot = await db.collection('favorites')
-                                .where('userId', '==', currentUser.uid)
-                                .get();
-                            favSnapshot.forEach(doc => {
-                                userFavorites.add(doc.data().projectId);
-                            });
-                        } catch (error) {
-                            console.log('Error loading favorites');
-                        }
+                    // Sort based on selected option
+                    const sortBy = document.getElementById('sortSelect')?.value || 'newest';
+                    
+                    switch(sortBy) {
+                        case 'newest':
+                            projects.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+                            break;
+                        case 'oldest':
+                            projects.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
+                            break;
+                        case 'mostUpvoted':
+                            projects.sort((a, b) => (b.upvotes || 0) - (a.upvotes || 0));
+                            break;
+                        case 'mostFavorited':
+                            projects.sort((a, b) => (b.favorites || 0) - (a.favorites || 0));
+                            break;
                     }
                     
+                    // Apply category filter
                     const categoryFilter = document.getElementById('categoryFilter')?.value;
                     if (categoryFilter && categoryFilter !== 'all') {
                         projects = projects.filter(p => p.tags && p.tags.includes(categoryFilter));
                     }
                     
+                    // Apply search filter
                     const searchTerm = document.getElementById('searchInput')?.value?.toLowerCase();
                     if (searchTerm) {
                         projects = projects.filter(p => 
@@ -1832,14 +1770,26 @@
                         );
                     }
                     
-                    displayProjects(projects, userFavorites);
-                }, (error) => {
-                    console.log('Error loading projects');
+                    // Get user favorites if logged in
+                    if (currentUser) {
+                        db.collection('favorites').where('userId', '==', currentUser.uid).get()
+                            .then(favSnapshot => {
+                                const userFavorites = new Set();
+                                favSnapshot.forEach(doc => {
+                                    userFavorites.add(doc.data().projectId);
+                                });
+                                displayProjects(projects, userFavorites);
+                            })
+                            .catch(() => {
+                                displayProjects(projects, new Set());
+                            });
+                    } else {
+                        displayProjects(projects, new Set());
+                    }
+                })
+                .catch((error) => {
                     projectsGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading projects</p></div>';
                 });
-            } catch (error) {
-                console.log('Error setting up projects listener');
-            }
         }
 
         function displayProjects(projects, userFavorites = new Set()) {
@@ -1877,7 +1827,7 @@
                         <span class="project-author">
                             <i class="fas fa-user"></i> ${escapeHtml(project.userName)}
                         </span>
-                        <span>${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
+                        <span>${project.createdAt ? new Date(project.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}</span>
                     </div>
                     <div class="project-tags">
                         ${project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
@@ -1933,9 +1883,9 @@
             const profileContent = document.getElementById('profileContent');
             
             try {
+                // Get user's projects
                 const projectsSnapshot = await db.collection('projects')
                     .where('userId', '==', currentUser.uid)
-                    .orderBy('createdAt', 'desc')
                     .get();
                 
                 const userProjects = [];
@@ -1943,6 +1893,10 @@
                     userProjects.push({ id: doc.id, ...doc.data() });
                 });
                 
+                // Sort by date
+                userProjects.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+                
+                // Get user's favorites
                 const favoritesSnapshot = await db.collection('favorites')
                     .where('userId', '==', currentUser.uid)
                     .get();
@@ -2067,26 +2021,20 @@
                     comments.push({ id: doc.id, ...doc.data() });
                 });
                 
-                // Get user's vote if logged in
-                let userVote = null;
+                // Check if user has voted
+                let userHasVoted = false;
                 if (currentUser) {
-                    try {
-                        const voteDoc = await db.collection('votes').doc(`${projectId}_${currentUser.uid}`).get();
-                        if (voteDoc.exists) {
-                            userVote = voteDoc.data().type;
-                        }
-                    } catch (error) {
-                        // Ignore vote errors
-                    }
+                    const voteDoc = await db.collection('votes').doc(`${projectId}_${currentUser.uid}`).get();
+                    userHasVoted = voteDoc.exists;
                 }
                 
-                displayProjectModal(project, comments, userVote);
+                displayProjectModal(project, comments, userHasVoted);
             } catch (error) {
                 content.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading project</p></div>';
             }
         };
 
-        function displayProjectModal(project, comments, userVote = null) {
+        function displayProjectModal(project, comments, userHasVoted = false) {
             const content = document.getElementById('modalProjectContent');
             
             content.innerHTML = `
@@ -2094,7 +2042,7 @@
                     <h2>${escapeHtml(project.name)}</h2>
                     <div class="project-header-meta">
                         <span><i class="fas fa-user"></i> ${escapeHtml(project.userName)}</span>
-                        <span><i class="fas fa-calendar"></i> ${project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
+                        <span><i class="fas fa-calendar"></i> ${project.createdAt ? new Date(project.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}</span>
                     </div>
                 </div>
                 
@@ -2111,7 +2059,7 @@
                 </div>
                 
                 <div class="project-actions-modal">
-                    <button class="vote-btn ${userVote === 'up' ? 'voted' : ''}" onclick="vote('${project.id}', 'up')">
+                    <button class="vote-btn ${userHasVoted ? 'voted' : ''}" onclick="vote('${project.id}')">
                         <i class="fas fa-arrow-up"></i> Upvote (${project.upvotes || 0})
                     </button>
                 </div>
@@ -2146,12 +2094,12 @@
                 <div class="comment" id="comment-${comment.id}">
                     <div class="comment-header">
                         <span class="comment-author">${escapeHtml(comment.userName)}</span>
-                        <span class="comment-date">${comment.createdAt ? new Date(comment.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
+                        <span class="comment-date">${comment.createdAt ? new Date(comment.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}</span>
                     </div>
                     <div class="comment-content">${escapeHtml(comment.content)}</div>
                     <div class="comment-actions">
                         <div class="comment-votes">
-                            <button class="comment-vote-btn" onclick="voteComment('${comment.id}', 'up')">
+                            <button class="comment-vote-btn" onclick="voteComment('${comment.id}')">
                                 <i class="fas fa-arrow-up"></i> ${comment.upvotes || 0}
                             </button>
                         </div>
@@ -2178,7 +2126,7 @@
         }
 
         // ==================== VOTING FUNCTIONS ====================
-        window.vote = async function(projectId, type) {
+        window.vote = async function(projectId) {
             if (!currentUser) {
                 showNotification('Please sign in to vote', 'warning');
                 showAuthModal();
@@ -2191,30 +2139,25 @@
                 
                 const voteDoc = await voteRef.get();
                 
-                await db.runTransaction(async (transaction) => {
-                    const projectDoc = await transaction.get(projectRef);
-                    if (!projectDoc.exists) throw new Error('Project not found');
-                    
-                    let newUpvotes = projectDoc.data().upvotes || 0;
-                    
-                    if (voteDoc.exists) {
-                        newUpvotes--;
-                        transaction.delete(voteRef);
-                    } else {
-                        newUpvotes++;
-                        transaction.set(voteRef, {
-                            userId: currentUser.uid,
-                            projectId,
-                            type: 'up',
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    }
-                    
-                    transaction.update(projectRef, {
-                        upvotes: newUpvotes
+                if (voteDoc.exists) {
+                    // Remove vote
+                    await voteRef.delete();
+                    await projectRef.update({
+                        upvotes: firebase.firestore.FieldValue.increment(-1)
                     });
-                });
+                } else {
+                    // Add vote
+                    await voteRef.set({
+                        userId: currentUser.uid,
+                        projectId: projectId,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    await projectRef.update({
+                        upvotes: firebase.firestore.FieldValue.increment(1)
+                    });
+                }
                 
+                // Refresh the modal
                 if (currentProjectId === projectId) {
                     openProjectModal(projectId);
                 }
@@ -2223,7 +2166,7 @@
             }
         };
 
-        window.voteComment = async function(commentId, type) {
+        window.voteComment = async function(commentId) {
             if (!currentUser) {
                 showNotification('Please sign in to vote', 'warning');
                 showAuthModal();
@@ -2236,29 +2179,21 @@
                 
                 const voteDoc = await voteRef.get();
                 
-                await db.runTransaction(async (transaction) => {
-                    const commentDoc = await transaction.get(commentRef);
-                    if (!commentDoc.exists) throw new Error('Comment not found');
-                    
-                    let newUpvotes = commentDoc.data().upvotes || 0;
-                    
-                    if (voteDoc.exists) {
-                        newUpvotes--;
-                        transaction.delete(voteRef);
-                    } else {
-                        newUpvotes++;
-                        transaction.set(voteRef, {
-                            userId: currentUser.uid,
-                            commentId,
-                            type: 'up',
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    }
-                    
-                    transaction.update(commentRef, {
-                        upvotes: newUpvotes
+                if (voteDoc.exists) {
+                    await voteRef.delete();
+                    await commentRef.update({
+                        upvotes: firebase.firestore.FieldValue.increment(-1)
                     });
-                });
+                } else {
+                    await voteRef.set({
+                        userId: currentUser.uid,
+                        commentId: commentId,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    await commentRef.update({
+                        upvotes: firebase.firestore.FieldValue.increment(1)
+                    });
+                }
                 
                 if (currentProjectId) {
                     openProjectModal(currentProjectId);
@@ -2465,10 +2400,8 @@
             initializeSearchAndFilters();
             initializeModals();
             
-            // Small delay to ensure Firebase is ready
-            setTimeout(() => {
-                loadProjects();
-            }, 500);
+            // Load projects
+            loadProjects();
 
             // Auth tabs
             document.querySelectorAll('.auth-tab').forEach(tab => {
