@@ -17,7 +17,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     
     <style>
-        /* All existing styles remain exactly the same as before */
+        /* All existing styles remain exactly the same */
         * {
             margin: 0;
             padding: 0;
@@ -1479,7 +1479,7 @@
         // Disable all Firebase logs
         firebase.firestore.setLogLevel('silent');
 
-        // Enable persistence with better error handling
+        // Enable persistence with error handling
         db.enablePersistence({ experimentalForceOwningTab: true })
             .catch(err => {
                 if (err.code === 'failed-precondition') {
@@ -1494,15 +1494,11 @@
         let currentUser = null;
         let currentProjectId = null;
         let selectedTags = new Set();
-        let projectsUnsubscribe = null;
 
         // ==================== AUTH FUNCTIONS ====================
         auth.onAuthStateChanged(user => {
             currentUser = user;
             updateAuthUI();
-            if (projectsUnsubscribe) {
-                projectsUnsubscribe();
-            }
             loadProjects();
         });
 
@@ -1728,7 +1724,6 @@
         function loadProjects() {
             const projectsGrid = document.getElementById('projectsGrid');
             
-            // Simple query without complex ordering first
             db.collection('projects').get()
                 .then((snapshot) => {
                     let projects = [];
@@ -1788,7 +1783,7 @@
                     }
                 })
                 .catch((error) => {
-                    projectsGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading projects</p></div>';
+                    projectsGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading projects. Please check your Firebase connection.</p></div>';
                 });
         }
 
@@ -1799,8 +1794,8 @@
                 projectsGrid.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-folder-open"></i>
-                        <p>No projects found</p>
-                        <button onclick="document.querySelector('[data-tab=\\"create\\"]').click()">Create your first project</button>
+                        <p>No projects found. Create your first project!</p>
+                        <button onclick="document.querySelector('[data-tab=\\"create\\"]').click()">Create Project</button>
                     </div>
                 `;
                 return;
@@ -2140,13 +2135,11 @@
                 const voteDoc = await voteRef.get();
                 
                 if (voteDoc.exists) {
-                    // Remove vote
                     await voteRef.delete();
                     await projectRef.update({
                         upvotes: firebase.firestore.FieldValue.increment(-1)
                     });
                 } else {
-                    // Add vote
                     await voteRef.set({
                         userId: currentUser.uid,
                         projectId: projectId,
